@@ -1,13 +1,5 @@
 node_modules/
-*.log
+.DS_Store
 .env
-deploy.zip
-__pycache__/
-*.pyc
-.python_packages/
-bin/
-obj/
-.venv/
-api/.venv/
-*.dist-info/
-site-packages/
+*.log
+.vscode/
