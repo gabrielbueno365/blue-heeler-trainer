@@ -1,0 +1,14 @@
+.git*
+.vscode
+__pycache__
+*.pyc
+.python_version
+*.md
+docs/
+deploy.sh
+deploy-simple.sh
+index.html
+styles.css
+app.js
+app.html
+manifest.json

@@ -1,0 +1,3 @@
+# Azure Functions Requirements
+azure-functions==1.18.0
+azure-cosmos==4.5.1
