@@ -3,194 +3,2224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Blue Heeler Trainer Pro - Sistema profissional de treinamento para filhotes Blue Heeler">
-    <meta name="theme-color" content="#FF6B6B">
     <title>Blue Heeler Trainer Pro</title>
-    
-    <!-- Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐕</text></svg>">
-    
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json">
-    
-    <!-- CSS EXTERNO - CRÍTICO PARA AZURE -->
-    <link rel="stylesheet" href="/styles.css">
+    <style>
+        :root {
+          /* Primitive Color Tokens */
+          --color-white: rgba(255, 255, 255, 1);
+          --color-black: rgba(0, 0, 0, 1);
+          --color-cream-50: rgba(252, 252, 249, 1);
+          --color-cream-100: rgba(255, 255, 253, 1);
+          --color-gray-200: rgba(245, 245, 245, 1);
+          --color-gray-300: rgba(167, 169, 169, 1);
+          --color-gray-400: rgba(119, 124, 124, 1);
+          --color-slate-500: rgba(98, 108, 113, 1);
+          --color-brown-600: rgba(94, 82, 64, 1);
+          --color-charcoal-700: rgba(31, 33, 33, 1);
+          --color-charcoal-800: rgba(38, 40, 40, 1);
+          --color-slate-900: rgba(19, 52, 59, 1);
+          --color-teal-300: rgba(50, 184, 198, 1);
+          --color-teal-400: rgba(45, 166, 178, 1);
+          --color-teal-500: rgba(33, 128, 141, 1);
+          --color-teal-600: rgba(29, 116, 128, 1);
+          --color-teal-700: rgba(26, 104, 115, 1);
+          --color-teal-800: rgba(41, 150, 161, 1);
+          --color-red-400: rgba(255, 84, 89, 1);
+          --color-red-500: rgba(192, 21, 47, 1);
+          --color-orange-400: rgba(230, 129, 97, 1);
+          --color-orange-500: rgba(168, 75, 47, 1);
+
+          /* RGB versions for opacity control */
+          --color-brown-600-rgb: 94, 82, 64;
+          --color-teal-500-rgb: 33, 128, 141;
+          --color-slate-900-rgb: 19, 52, 59;
+          --color-slate-500-rgb: 98, 108, 113;
+          --color-red-500-rgb: 192, 21, 47;
+          --color-red-400-rgb: 255, 84, 89;
+          --color-orange-500-rgb: 168, 75, 47;
+          --color-orange-400-rgb: 230, 129, 97;
+
+          /* Background color tokens (Light Mode) */
+          --color-bg-1: rgba(59, 130, 246, 0.08);
+          --color-bg-2: rgba(245, 158, 11, 0.08);
+          --color-bg-3: rgba(34, 197, 94, 0.08);
+          --color-bg-4: rgba(239, 68, 68, 0.08);
+          --color-bg-5: rgba(147, 51, 234, 0.08);
+          --color-bg-6: rgba(249, 115, 22, 0.08);
+          --color-bg-7: rgba(236, 72, 153, 0.08);
+          --color-bg-8: rgba(6, 182, 212, 0.08);
+
+          /* Semantic Color Tokens (Light Mode) */
+          --color-background: var(--color-cream-50);
+          --color-surface: var(--color-cream-100);
+          --color-text: var(--color-slate-900);
+          --color-text-secondary: var(--color-slate-500);
+          --color-primary: var(--color-teal-500);
+          --color-primary-hover: var(--color-teal-600);
+          --color-primary-active: var(--color-teal-700);
+          --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
+          --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
+          --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.25);
+          --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+          --color-btn-primary-text: var(--color-cream-50);
+          --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+          --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.12);
+          --color-error: var(--color-red-500);
+          --color-success: var(--color-teal-500);
+          --color-warning: var(--color-orange-500);
+          --color-info: var(--color-slate-500);
+          --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
+          --color-select-caret: rgba(var(--color-slate-900-rgb), 0.8);
+
+          /* Common style patterns */
+          --focus-ring: 0 0 0 3px var(--color-focus-ring);
+          --focus-outline: 2px solid var(--color-primary);
+          --status-bg-opacity: 0.15;
+          --status-border-opacity: 0.25;
+          --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+          --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+
+          /* RGB versions for opacity control */
+          --color-success-rgb: 33, 128, 141;
+          --color-error-rgb: 192, 21, 47;
+          --color-warning-rgb: 168, 75, 47;
+          --color-info-rgb: 98, 108, 113;
+
+          /* Typography */
+          --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system,
+            BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+          --font-family-mono: "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo,
+            Monaco, Consolas, monospace;
+          --font-size-xs: 11px;
+          --font-size-sm: 12px;
+          --font-size-base: 14px;
+          --font-size-md: 14px;
+          --font-size-lg: 16px;
+          --font-size-xl: 18px;
+          --font-size-2xl: 20px;
+          --font-size-3xl: 24px;
+          --font-size-4xl: 30px;
+          --font-weight-normal: 400;
+          --font-weight-medium: 500;
+          --font-weight-semibold: 550;
+          --font-weight-bold: 600;
+          --line-height-tight: 1.2;
+          --line-height-normal: 1.5;
+          --letter-spacing-tight: -0.01em;
+
+          /* Spacing */
+          --space-0: 0;
+          --space-1: 1px;
+          --space-2: 2px;
+          --space-4: 4px;
+          --space-6: 6px;
+          --space-8: 8px;
+          --space-10: 10px;
+          --space-12: 12px;
+          --space-16: 16px;
+          --space-20: 20px;
+          --space-24: 24px;
+          --space-32: 32px;
+
+          /* Border Radius */
+          --radius-sm: 6px;
+          --radius-base: 8px;
+          --radius-md: 10px;
+          --radius-lg: 12px;
+          --radius-full: 9999px;
+
+          /* Shadows */
+          --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
+          --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+          --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04),
+            0 2px 4px -1px rgba(0, 0, 0, 0.02);
+          --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04),
+            0 4px 6px -2px rgba(0, 0, 0, 0.02);
+          --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.15),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.03);
+
+          /* Animation */
+          --duration-fast: 150ms;
+          --duration-normal: 250ms;
+          --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+
+          /* Layout */
+          --container-sm: 640px;
+          --container-md: 768px;
+          --container-lg: 1024px;
+          --container-xl: 1280px;
+        }
+
+        /* Dark mode colors */
+        @media (prefers-color-scheme: dark) {
+          :root {
+            --color-gray-400-rgb: 119, 124, 124;
+            --color-teal-300-rgb: 50, 184, 198;
+            --color-gray-300-rgb: 167, 169, 169;
+            --color-gray-200-rgb: 245, 245, 245;
+
+            --color-bg-1: rgba(29, 78, 216, 0.15);
+            --color-bg-2: rgba(180, 83, 9, 0.15);
+            --color-bg-3: rgba(21, 128, 61, 0.15);
+            --color-bg-4: rgba(185, 28, 28, 0.15);
+            --color-bg-5: rgba(107, 33, 168, 0.15);
+            --color-bg-6: rgba(194, 65, 12, 0.15);
+            --color-bg-7: rgba(190, 24, 93, 0.15);
+            --color-bg-8: rgba(8, 145, 178, 0.15);
+
+            --color-background: var(--color-charcoal-700);
+            --color-surface: var(--color-charcoal-800);
+            --color-text: var(--color-gray-200);
+            --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
+            --color-primary: var(--color-teal-300);
+            --color-primary-hover: var(--color-teal-400);
+            --color-primary-active: var(--color-teal-800);
+            --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
+            --color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
+            --color-secondary-active: rgba(var(--color-gray-400-rgb), 0.3);
+            --color-border: rgba(var(--color-gray-400-rgb), 0.3);
+            --color-error: var(--color-red-400);
+            --color-success: var(--color-teal-300);
+            --color-warning: var(--color-orange-400);
+            --color-info: var(--color-gray-300);
+            --color-focus-ring: rgba(var(--color-teal-300-rgb), 0.4);
+            --color-btn-primary-text: var(--color-slate-900);
+            --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
+            --color-card-border-inner: rgba(var(--color-gray-400-rgb), 0.15);
+            --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+              inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+            --color-select-caret: rgba(var(--color-gray-200-rgb), 0.8);
+
+            --color-success-rgb: var(--color-teal-300-rgb);
+            --color-error-rgb: var(--color-red-400-rgb);
+            --color-warning-rgb: var(--color-orange-400-rgb);
+            --color-info-rgb: var(--color-gray-300-rgb);
+          }
+        }
+
+        /* Base styles */
+        html {
+          font-size: var(--font-size-base);
+          font-family: var(--font-family-base);
+          line-height: var(--line-height-normal);
+          color: var(--color-text);
+          background-color: var(--color-background);
+          -webkit-font-smoothing: antialiased;
+          box-sizing: border-box;
+        }
+
+        body {
+          margin: 0;
+          padding: 0;
+          background-color: var(--color-background);
+        }
+
+        *, *::before, *::after {
+          box-sizing: inherit;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+          margin: 0;
+          font-weight: var(--font-weight-semibold);
+          line-height: var(--line-height-tight);
+          color: var(--color-text);
+          letter-spacing: var(--letter-spacing-tight);
+        }
+
+        h1 { font-size: var(--font-size-4xl); }
+        h2 { font-size: var(--font-size-3xl); }
+        h3 { font-size: var(--font-size-2xl); }
+        h4 { font-size: var(--font-size-xl); }
+        h5 { font-size: var(--font-size-lg); }
+        h6 { font-size: var(--font-size-md); }
+
+        p {
+          margin: 0 0 var(--space-16) 0;
+          color: var(--color-text);
+        }
+
+        /* Custom App Styles */
+        .app {
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+        }
+
+        .header {
+          background: linear-gradient(135deg, var(--color-primary), var(--color-teal-600));
+          color: var(--color-cream-50);
+          padding: var(--space-20) var(--space-16);
+          text-align: center;
+          border-radius: 0 0 var(--space-20) var(--space-20);
+          margin-bottom: var(--space-16);
+        }
+
+        .header-title {
+          font-size: var(--font-size-3xl);
+          font-weight: var(--font-weight-bold);
+          margin-bottom: var(--space-8);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: var(--space-8);
+        }
+
+        .dog-info {
+          background: var(--color-surface);
+          border: 1px solid var(--color-card-border);
+          border-radius: var(--radius-lg);
+          padding: var(--space-16);
+          margin: 0 var(--space-16) var(--space-16);
+          box-shadow: var(--shadow-sm);
+        }
+
+        .dog-stats {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+          gap: var(--space-12);
+          margin-top: var(--space-12);
+        }
+
+        .stat-item {
+          text-align: center;
+        }
+
+        .stat-number {
+          font-size: var(--font-size-2xl);
+          font-weight: var(--font-weight-bold);
+          color: var(--color-primary);
+        }
+
+        .stat-label {
+          font-size: var(--font-size-sm);
+          color: var(--color-text-secondary);
+        }
+
+        .main {
+          flex: 1;
+          padding: 0 var(--space-16) var(--space-20);
+        }
+
+        .quick-actions {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: var(--space-12);
+          margin-bottom: var(--space-24);
+        }
+
+        .action-btn {
+          background: var(--color-surface);
+          border: 1px solid var(--color-card-border);
+          border-radius: var(--radius-lg);
+          padding: var(--space-20);
+          text-align: center;
+          text-decoration: none;
+          color: var(--color-text);
+          cursor: pointer;
+          transition: all var(--duration-normal) var(--ease-standard);
+          box-shadow: var(--shadow-sm);
+        }
+
+        .action-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-md);
+          background: var(--color-bg-1);
+        }
+
+        .action-btn.primary {
+          background: var(--color-primary);
+          color: var(--color-btn-primary-text);
+        }
+
+        .action-btn.primary:hover {
+          background: var(--color-primary-hover);
+        }
+
+        .action-icon {
+          font-size: var(--font-size-3xl);
+          margin-bottom: var(--space-8);
+        }
+
+        .action-title {
+          font-weight: var(--font-weight-semibold);
+          margin-bottom: var(--space-4);
+        }
+
+        .action-desc {
+          font-size: var(--font-size-sm);
+          color: var(--color-text-secondary);
+        }
+
+        .section {
+          margin-bottom: var(--space-24);
+        }
+
+        .section-title {
+          font-size: var(--font-size-xl);
+          font-weight: var(--font-weight-semibold);
+          margin-bottom: var(--space-16);
+          color: var(--color-text);
+        }
+
+        .daily-plan {
+          background: var(--color-surface);
+          border: 1px solid var(--color-card-border);
+          border-radius: var(--radius-lg);
+          padding: var(--space-20);
+          box-shadow: var(--shadow-sm);
+        }
+
+        .time-section {
+          margin-bottom: var(--space-20);
+        }
+
+        .time-section:last-child {
+          margin-bottom: 0;
+        }
+
+        .time-header {
+          display: flex;
+          align-items: center;
+          gap: var(--space-8);
+          margin-bottom: var(--space-12);
+          padding-bottom: var(--space-8);
+          border-bottom: 2px solid var(--color-border);
+        }
+
+        .time-icon {
+          font-size: var(--font-size-xl);
+        }
+
+        .time-title {
+          font-size: var(--font-size-lg);
+          font-weight: var(--font-weight-semibold);
+          color: var(--color-text);
+        }
+
+        .exercise-list {
+          display: flex;
+          flex-direction: column;
+          gap: var(--space-8);
+        }
+
+        .exercise-item {
+          display: flex;
+          align-items: center;
+          gap: var(--space-12);
+          padding: var(--space-12);
+          background: var(--color-bg-3);
+          border-radius: var(--radius-base);
+          cursor: pointer;
+          transition: all var(--duration-normal) var(--ease-standard);
+        }
+
+        .exercise-item:hover {
+          background: var(--color-bg-4);
+          transform: translateX(2px);
+        }
+
+        .exercise-item.completed {
+          background: var(--color-bg-3);
+          opacity: 0.7;
+        }
+
+        .exercise-checkbox {
+          width: 20px;
+          height: 20px;
+          border: 2px solid var(--color-border);
+          border-radius: var(--radius-sm);
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: var(--color-surface);
+          transition: all var(--duration-normal) var(--ease-standard);
+        }
+
+        .exercise-checkbox.checked {
+          background: var(--color-success);
+          border-color: var(--color-success);
+          color: var(--color-btn-primary-text);
+        }
+
+        .exercise-info {
+          flex: 1;
+        }
+
+        .exercise-title {
+          font-weight: var(--font-weight-medium);
+          margin-bottom: var(--space-2);
+          color: var(--color-text);
+        }
+
+        .exercise-duration {
+          font-size: var(--font-size-sm);
+          color: var(--color-text-secondary);
+        }
+
+        .bottom-nav {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background: var(--color-surface);
+          border-top: 1px solid var(--color-border);
+          display: flex;
+          padding: var(--space-8) 0;
+          box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-item {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: var(--space-8);
+          text-decoration: none;
+          color: var(--color-text-secondary);
+          transition: color var(--duration-normal) var(--ease-standard);
+          cursor: pointer;
+        }
+
+        .nav-item.active {
+          color: var(--color-primary);
+        }
+
+        .nav-item:hover {
+          color: var(--color-primary);
+        }
+
+        .nav-icon {
+          font-size: var(--font-size-xl);
+          margin-bottom: var(--space-4);
+        }
+
+        .nav-label {
+          font-size: var(--font-size-xs);
+          font-weight: var(--font-weight-medium);
+        }
+
+        .screen {
+          display: none;
+          min-height: calc(100vh - 80px);
+          padding-bottom: var(--space-20);
+        }
+
+        .screen.active {
+          display: block;
+        }
+
+        .tip-of-day {
+          background: var(--color-bg-2);
+          border: 1px solid rgba(var(--color-warning-rgb), 0.3);
+          border-radius: var(--radius-lg);
+          padding: var(--space-16);
+          margin-bottom: var(--space-16);
+        }
+
+        .tip-header {
+          display: flex;
+          align-items: center;
+          gap: var(--space-8);
+          margin-bottom: var(--space-8);
+        }
+
+        .tip-icon {
+          font-size: var(--font-size-lg);
+        }
+
+        .tip-title {
+          font-weight: var(--font-weight-semibold);
+          color: var(--color-text);
+        }
+
+        .tip-text {
+          color: var(--color-text);
+          font-size: var(--font-size-base);
+        }
+
+        .category-header {
+          background: var(--color-bg-1);
+          padding: var(--space-16);
+          border-radius: var(--radius-lg);
+          margin-bottom: var(--space-12);
+          border-left: 4px solid var(--color-primary);
+        }
+
+        .category-title {
+          font-size: var(--font-size-lg);
+          font-weight: var(--font-weight-semibold);
+          color: var(--color-text);
+          margin-bottom: var(--space-4);
+        }
+
+        .category-desc {
+          color: var(--color-text-secondary);
+          font-size: var(--font-size-sm);
+        }
+
+        .exercise-card {
+          background: var(--color-surface);
+          border: 1px solid var(--color-card-border);
+          border-radius: var(--radius-lg);
+          padding: var(--space-16);
+          margin-bottom: var(--space-12);
+          box-shadow: var(--shadow-sm);
+          cursor: pointer;
+          transition: all var(--duration-normal) var(--ease-standard);
+        }
+
+        .exercise-card:hover {
+          box-shadow: var(--shadow-md);
+          transform: translateY(-1px);
+        }
+
+        .exercise-card-header {
+          display: flex;
+          justify-content: between;
+          align-items: center;
+          gap: var(--space-12);
+          margin-bottom: var(--space-12);
+        }
+
+        .exercise-card-title {
+          font-weight: var(--font-weight-semibold);
+          color: var(--color-text);
+          flex: 1;
+        }
+
+        .exercise-duration-badge {
+          background: var(--color-primary);
+          color: var(--color-btn-primary-text);
+          padding: var(--space-4) var(--space-8);
+          border-radius: var(--radius-full);
+          font-size: var(--font-size-xs);
+          font-weight: var(--font-weight-medium);
+        }
+
+        .exercise-description {
+          color: var(--color-text-secondary);
+          margin-bottom: var(--space-12);
+          line-height: 1.4;
+        }
+
+        .exercise-meta {
+          display: flex;
+          gap: var(--space-16);
+          font-size: var(--font-size-sm);
+        }
+
+        .meta-item {
+          color: var(--color-text-secondary);
+        }
+
+        .meta-label {
+          font-weight: var(--font-weight-medium);
+          color: var(--color-text);
+        }
+
+        .badge {
+          display: inline-flex;
+          align-items: center;
+          gap: var(--space-4);
+          padding: var(--space-8) var(--space-12);
+          background: var(--color-bg-3);
+          border: 1px solid rgba(var(--color-success-rgb), 0.3);
+          border-radius: var(--radius-full);
+          font-size: var(--font-size-sm);
+          font-weight: var(--font-weight-medium);
+          color: var(--color-success);
+          margin: var(--space-4);
+        }
+
+        .badge.locked {
+          background: var(--color-secondary);
+          border-color: var(--color-border);
+          color: var(--color-text-secondary);
+        }
+
+        .progress-bar {
+          background: var(--color-secondary);
+          border-radius: var(--radius-full);
+          height: 8px;
+          overflow: hidden;
+          margin: var(--space-8) 0;
+        }
+
+        .progress-fill {
+          background: var(--color-success);
+          height: 100%;
+          border-radius: var(--radius-full);
+          transition: width var(--duration-normal) var(--ease-standard);
+        }
+
+        .calendar-grid {
+          display: grid;
+          grid-template-columns: repeat(7, 1fr);
+          gap: var(--space-4);
+          margin: var(--space-16) 0;
+        }
+
+        .calendar-day {
+          aspect-ratio: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: var(--color-surface);
+          border: 1px solid var(--color-border);
+          border-radius: var(--radius-sm);
+          font-size: var(--font-size-sm);
+          color: var(--color-text-secondary);
+        }
+
+        .calendar-day.completed {
+          background: var(--color-success);
+          color: var(--color-btn-primary-text);
+        }
+
+        .calendar-day.today {
+          border-color: var(--color-primary);
+          border-width: 2px;
+        }
+
+        .btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: var(--space-12) var(--space-16);
+          border-radius: var(--radius-base);
+          font-size: var(--font-size-base);
+          font-weight: var(--font-weight-medium);
+          line-height: 1.5;
+          cursor: pointer;
+          transition: all var(--duration-normal) var(--ease-standard);
+          border: none;
+          text-decoration: none;
+          background: var(--color-primary);
+          color: var(--color-btn-primary-text);
+        }
+
+        .btn:hover {
+          background: var(--color-primary-hover);
+        }
+
+        .btn.secondary {
+          background: var(--color-secondary);
+          color: var(--color-text);
+        }
+
+        .btn.secondary:hover {
+          background: var(--color-secondary-hover);
+        }
+
+        .btn.full-width {
+          width: 100%;
+        }
+
+        /* Modal styles */
+        .modal {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.5);
+          display: none;
+          align-items: center;
+          justify-content: center;
+          padding: var(--space-16);
+          z-index: 1000;
+        }
+
+        .modal.active {
+          display: flex;
+        }
+
+        .modal-content {
+          background: var(--color-surface);
+          border-radius: var(--radius-lg);
+          padding: var(--space-24);
+          max-width: 500px;
+          width: 100%;
+          max-height: 80vh;
+          overflow-y: auto;
+        }
+
+        .modal-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: var(--space-16);
+        }
+
+        .modal-title {
+          font-size: var(--font-size-xl);
+          font-weight: var(--font-weight-semibold);
+          color: var(--color-text);
+        }
+
+        .close-btn {
+          background: none;
+          border: none;
+          font-size: var(--font-size-3xl);
+          cursor: pointer;
+          color: var(--color-text-secondary);
+          padding: 0;
+        }
+
+        .close-btn:hover {
+          color: var(--color-text);
+        }
+
+        .timer-display {
+          font-size: var(--font-size-4xl);
+          font-weight: var(--font-weight-bold);
+          text-align: center;
+          color: var(--color-primary);
+          margin: var(--space-24) 0;
+        }
+
+        .timer-controls {
+          display: flex;
+          gap: var(--space-12);
+          justify-content: center;
+          margin-bottom: var(--space-16);
+        }
+
+        .clicker-btn {
+          width: 120px;
+          height: 120px;
+          border-radius: 50%;
+          background: var(--color-primary);
+          color: var(--color-btn-primary-text);
+          border: none;
+          font-size: var(--font-size-2xl);
+          font-weight: var(--font-weight-bold);
+          cursor: pointer;
+          box-shadow: var(--shadow-lg);
+          transition: all var(--duration-normal) var(--ease-standard);
+          margin: var(--space-16) auto;
+          display: block;
+        }
+
+        .clicker-btn:hover {
+          background: var(--color-primary-hover);
+          transform: scale(1.05);
+        }
+
+        .clicker-btn:active {
+          transform: scale(0.95);
+        }
+
+        .rep-counter {
+          text-align: center;
+          margin: var(--space-16) 0;
+        }
+
+        .rep-count {
+          font-size: var(--font-size-4xl);
+          font-weight: var(--font-weight-bold);
+          color: var(--color-primary);
+          margin: var(--space-8) 0;
+        }
+
+        .form-group {
+          margin-bottom: var(--space-16);
+        }
+
+        .form-label {
+          display: block;
+          margin-bottom: var(--space-8);
+          font-weight: var(--font-weight-medium);
+          color: var(--color-text);
+        }
+
+        .form-control {
+          width: 100%;
+          padding: var(--space-12);
+          border: 1px solid var(--color-border);
+          border-radius: var(--radius-base);
+          font-size: var(--font-size-base);
+          background: var(--color-surface);
+          color: var(--color-text);
+        }
+
+        .form-control:focus {
+          outline: none;
+          border-color: var(--color-primary);
+          box-shadow: var(--focus-ring);
+        }
+
+        select.form-control {
+          appearance: none;
+          background-image: var(--select-caret-light);
+          background-repeat: no-repeat;
+          background-position: right var(--space-12) center;
+          background-size: 16px;
+          padding-right: var(--space-32);
+        }
+
+        @media (prefers-color-scheme: dark) {
+          select.form-control {
+            background-image: var(--select-caret-dark);
+          }
+        }
+
+        .checkbox-group {
+          display: flex;
+          gap: var(--space-12);
+          flex-wrap: wrap;
+          margin: var(--space-8) 0;
+        }
+
+        .checkbox-item {
+          display: flex;
+          align-items: center;
+          gap: var(--space-8);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+          width: 18px;
+          height: 18px;
+          accent-color: var(--color-primary);
+        }
+
+        .floating-btn {
+          position: fixed;
+          bottom: 100px;
+          right: var(--space-16);
+          width: 56px;
+          height: 56px;
+          border-radius: 50%;
+          background: var(--color-primary);
+          color: var(--color-btn-primary-text);
+          border: none;
+          font-size: var(--font-size-2xl);
+          cursor: pointer;
+          box-shadow: var(--shadow-lg);
+          transition: all var(--duration-normal) var(--ease-standard);
+          z-index: 100;
+        }
+
+        .floating-btn:hover {
+          background: var(--color-primary-hover);
+          transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+          .quick-actions {
+            grid-template-columns: 1fr;
+            gap: var(--space-8);
+          }
+
+          .dog-stats {
+            grid-template-columns: repeat(3, 1fr);
+          }
+        }
+
+        @media (max-width: 480px) {
+          .header {
+            padding: var(--space-16);
+          }
+
+          .header-title {
+            font-size: var(--font-size-2xl);
+          }
+
+          .action-btn {
+            padding: var(--space-16);
+          }
+
+          .action-icon {
+            font-size: var(--font-size-2xl);
+          }
+
+          .modal-content {
+            margin: var(--space-8);
+            padding: var(--space-16);
+          }
+        }
+
+        .success-animation {
+          animation: bounce 0.6s ease-in-out;
+        }
+
+        @keyframes bounce {
+          0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+          }
+          40% {
+            transform: translateY(-10px);
+          }
+          60% {
+            transform: translateY(-5px);
+          }
+        }
+
+        /* Utility classes */
+        .text-center { text-align: center; }
+        .text-success { color: var(--color-success); }
+        .text-warning { color: var(--color-warning); }
+        .text-error { color: var(--color-error); }
+        .mb-0 { margin-bottom: 0; }
+        .mb-8 { margin-bottom: var(--space-8); }
+        .mb-16 { margin-bottom: var(--space-16); }
+        .mt-16 { margin-top: var(--space-16); }
+        .hidden { display: none; }
+
+        @font-face {
+          font-family: 'FKGroteskNeue';
+          src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2') format('woff2');
+        }
+    </style>
 </head>
 <body>
-    <!-- Modal de Login -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <div class="login-header">
-                <h1>🐕 Blue Heeler Trainer Pro</h1>
-                <p>Sistema Profissional de Treinamento</p>
-            </div>
-            <form id="loginForm" onsubmit="handleLogin(event)">
-                <div class="form-group">
-                    <label for="password">Senha de Acesso</label>
-                    <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
-                </div>
-                <button type="submit" class="btn btn-primary">
-                    <span>Entrar</span>
-                </button>
-                <p class="login-hint">Use qualquer senha para primeira vez - será salva automaticamente</p>
-            </form>
-            <div id="loginError" class="error-message"></div>
-        </div>
-    </div>
-
-    <!-- App Principal -->
-    <div id="app" class="hidden">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-content">
+    <div class="app">
+        <!-- Home Screen -->
+        <div id="home" class="screen active">
+            <header class="header">
                 <h1 class="header-title">
-                    <span class="header-emoji">🐕</span>
+                    <span>🐕</span>
                     Blue Heeler Trainer Pro
                 </h1>
-                <div class="sync-status" id="syncStatus">
-                    <span class="sync-dot"></span>
-                    <span class="sync-text">Sincronizado</span>
-                </div>
-            </div>
-        </header>
+                <p>Treinamento especializado para seu Australian Cattle Dog</p>
+            </header>
 
-        <!-- Container Principal -->
-        <main class="container">
-            <!-- Dashboard Cards -->
-            <section class="dashboard">
-                <div class="card card-progress">
-                    <h3>📊 Progresso</h3>
-                    <div class="card-value" id="progressValue">0%</div>
-                    <p class="card-info">Meta diária</p>
-                </div>
-                <div class="card card-streak">
-                    <h3>🔥 Streak</h3>
-                    <div class="card-value" id="streakValue">0</div>
-                    <p class="card-info">dias consecutivos</p>
-                </div>
-                <div class="card card-badges">
-                    <h3>🏆 Badges</h3>
-                    <div class="card-value" id="badgesValue">0</div>
-                    <p class="card-info">conquistas</p>
-                </div>
-                <div class="card card-days">
-                    <h3>📅 Dias</h3>
-                    <div class="card-value" id="daysValue">0</div>
-                    <p class="card-info">treinados</p>
-                </div>
-            </section>
-
-            <!-- Barra de Progresso -->
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill" style="width: 0%">
-                    <span>0%</span>
-                </div>
-            </div>
-
-            <!-- Abas de Navegação -->
-            <nav class="tabs">
-                <button class="tab-btn active" data-tab="today">📅 Hoje</button>
-                <button class="tab-btn" data-tab="progress">📈 Progresso</button>
-                <button class="tab-btn" data-tab="exercises">📚 Exercícios</button>
-                <button class="tab-btn" data-tab="badges">🏆 Badges</button>
-            </nav>
-
-            <!-- Conteúdo das Abas -->
-            <div class="tabs-content">
-                <!-- Tab: Hoje -->
-                <div id="today" class="tab-pane active">
-                    <h2>Treinos de Hoje</h2>
-                    <div id="todayTraining" class="training-list">
-                        <!-- Preenchido por JavaScript -->
+            <div class="dog-info">
+                <h3 id="dogName">Meu Blue Heeler</h3>
+                <p id="dogAge" class="text-success mb-8">1 mês e 19 dias • Socialização Crítica</p>
+                <div class="dog-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="totalSessions">0</div>
+                        <div class="stat-label">Sessões</div>
                     </div>
-                </div>
-
-                <!-- Tab: Progresso -->
-                <div id="progress" class="tab-pane">
-                    <h2>Seu Progresso</h2>
-                    <div class="progress-stats">
-                        <div class="stat-item">
-                            <span class="stat-label">Taxa de Conclusão:</span>
-                            <span class="stat-value" id="completionRate">0%</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Semana Atual:</span>
-                            <span class="stat-value" id="weekProgress">0/7</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Mês Atual:</span>
-                            <span class="stat-value" id="monthProgress">0/30</span>
-                        </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="currentStreak">0</div>
+                        <div class="stat-label">Sequência</div>
                     </div>
-                    <div id="calendar" class="calendar">
-                        <!-- Preenchido por JavaScript -->
-                    </div>
-                </div>
-
-                <!-- Tab: Exercícios -->
-                <div id="exercises" class="tab-pane">
-                    <h2>Biblioteca de Exercícios</h2>
-                    <div id="exercisesList" class="exercises-list">
-                        <!-- Preenchido por JavaScript -->
-                    </div>
-                </div>
-
-                <!-- Tab: Badges -->
-                <div id="badges" class="tab-pane">
-                    <h2>🏆 Suas Conquistas</h2>
-                    <div id="badgesContainer" class="badges-grid">
-                        <!-- Preenchido por JavaScript -->
+                    <div class="stat-item">
+                        <div class="stat-number" id="overallProgress">0%</div>
+                        <div class="stat-label">Progresso</div>
                     </div>
                 </div>
             </div>
-        </main>
 
-        <!-- Botão de Configurações -->
-        <button class="btn-settings" onclick="openSettings()" title="Configurações">
-            <span>⚙️</span>
+            <div class="tip-of-day">
+                <div class="tip-header">
+                    <span class="tip-icon">💡</span>
+                    <span class="tip-title">Dica do Dia</span>
+                </div>
+                <p class="tip-text" id="dailyTip">Sessões curtas (5-10 min) são mais eficazes que longas!</p>
+            </div>
+
+            <main class="main">
+                <div class="quick-actions">
+                    <button class="action-btn primary" onclick="showScreen('training')">
+                        <div class="action-icon">🎯</div>
+                        <div class="action-title">Iniciar Treino Diário</div>
+                        <div class="action-desc">Começar sessão de hoje</div>
+                    </button>
+                    <button class="action-btn" onclick="showScreen('library')">
+                        <div class="action-icon">📚</div>
+                        <div class="action-title">Biblioteca</div>
+                        <div class="action-desc">Todos os exercícios</div>
+                    </button>
+                    <button class="action-btn" onclick="showScreen('progress')">
+                        <div class="action-icon">📊</div>
+                        <div class="action-title">Progresso</div>
+                        <div class="action-desc">Estatísticas &amp; marcos</div>
+                    </button>
+                    <button class="action-btn" onclick="showScreen('profile')">
+                        <div class="action-icon">🐾</div>
+                        <div class="action-title">Perfil</div>
+                        <div class="action-desc">Dados do seu cão</div>
+                    </button>
+                </div>
+            </main>
+        </div>
+
+        <!-- Training Screen -->
+        <div id="training" class="screen">
+            <header class="header">
+                <h2>Treino Diário</h2>
+                <p id="trainingDate">Fase: Socialização Crítica (7-14 semanas)</p>
+            </header>
+
+            <main class="main">
+                <div class="daily-plan">
+                    <!-- Morning -->
+                    <div class="time-section">
+                        <div class="time-header">
+                            <span class="time-icon">🌅</span>
+                            <span class="time-title">Manhã</span>
+                        </div>
+                        <div class="exercise-list" id="morningExercises"></div>
+                    </div>
+
+                    <!-- Afternoon -->
+                    <div class="time-section">
+                        <div class="time-header">
+                            <span class="time-icon">☀️</span>
+                            <span class="time-title">Tarde</span>
+                        </div>
+                        <div class="exercise-list" id="afternoonExercises"></div>
+                    </div>
+
+                    <!-- Evening -->
+                    <div class="time-section">
+                        <div class="time-header">
+                            <span class="time-icon">🌙</span>
+                            <span class="time-title">Noite</span>
+                        </div>
+                        <div class="exercise-list" id="eveningExercises"></div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Library Screen -->
+        <div id="library" class="screen">
+            <header class="header">
+                <h2>Biblioteca de Exercícios</h2>
+                <p>Guia completo para treinar seu Blue Heeler</p>
+            </header>
+
+            <main class="main" id="libraryContent"></main>
+        </div>
+
+        <!-- Progress Screen -->
+        <div id="progress" class="screen">
+            <header class="header">
+                <h2>Progresso</h2>
+                <p>Acompanhe o desenvolvimento do seu Blue Heeler</p>
+            </header>
+
+            <main class="main">
+                <div class="section">
+                    <h3 class="section-title">Conquistas</h3>
+                    <div id="badgesContainer" class="badges-grid"></div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Calendário de Treinos</h3>
+                    <div class="calendar-grid" id="trainingCalendar"></div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Marcos de Desenvolvimento</h3>
+                    <div id="milestonesContainer"></div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Checklist Semanal</h3>
+                    <div id="weeklyChecklist"></div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Profile Screen -->
+        <div id="profile" class="screen">
+            <header class="header">
+                <h2>Perfil do Cão</h2>
+                <p>Informações e configurações</p>
+            </header>
+
+            <main class="main">
+                <div class="dog-info">
+                    <div class="text-center mb-16">
+                        <div style="font-size: 80px; margin-bottom: 16px;">🐕</div>
+                        <h3 id="profileName">Meu Blue Heeler</h3>
+                        <p id="profileAge" class="text-success">1 mês e 19 dias</p>
+                    </div>
+
+                    <div class="dog-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" id="profileTotalDays">0</div>
+                            <div class="stat-label">Dias Treinados</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="profileTotalExercises">0</div>
+                            <div class="stat-label">Exercícios</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="profileConsistency">0%</div>
+                            <div class="stat-label">Consistência</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <button class="btn full-width" onclick="showSetupModal()">Editar Informações</button>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Fase Atual</h3>
+                    <div class="category-header">
+                        <div class="category-title">Socialização Crítica (7-14 semanas)</div>
+                        <div class="category-desc">Janela mais importante. Foco em exposição a pessoas, cães, sons, superfícies.</div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <div class="nav-item active" onclick="showScreen('home')">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-label">Home</div>
+            </div>
+            <div class="nav-item" onclick="showScreen('training')">
+                <div class="nav-icon">🎯</div>
+                <div class="nav-label">Treino</div>
+            </div>
+            <div class="nav-item" onclick="showScreen('library')">
+                <div class="nav-icon">📚</div>
+                <div class="nav-label">Biblioteca</div>
+            </div>
+            <div class="nav-item" onclick="showScreen('progress')">
+                <div class="nav-icon">📊</div>
+                <div class="nav-label">Progresso</div>
+            </div>
+            <div class="nav-item" onclick="showScreen('profile')">
+                <div class="nav-icon">🐾</div>
+                <div class="nav-label">Perfil</div>
+            </div>
+        </nav>
+
+        <!-- Exercise Detail Modal -->
+        <div id="exerciseModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modalTitle">Exercício</h3>
+                    <button class="close-btn" onclick="closeModal('exerciseModal')">&times;</button>
+                </div>
+                <div id="modalContent"></div>
+                <div class="timer-controls">
+                    <button class="btn secondary" onclick="startTimer()">⏱️ Timer</button>
+                    <button class="btn secondary" onclick="showClicker()">🔊 Clicker</button>
+                    <button class="btn secondary" onclick="showCounter()">🔢 Contador</button>
+                </div>
+                <button class="btn full-width mt-16" onclick="markExerciseComplete()">✅ Marcar como Completo</button>
+            </div>
+        </div>
+
+        <!-- Timer Modal -->
+        <div id="timerModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Timer de Treino</h3>
+                    <button class="close-btn" onclick="closeModal('timerModal')">&times;</button>
+                </div>
+                <div class="timer-display" id="timerDisplay">05:00</div>
+                <div class="timer-controls">
+                    <button class="btn" id="timerBtn" onclick="toggleTimer()">▶️ Iniciar</button>
+                    <button class="btn secondary" onclick="resetTimer()">🔄 Reiniciar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clicker Modal -->
+        <div id="clickerModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Clicker Virtual</h3>
+                    <button class="close-btn" onclick="closeModal('clickerModal')">&times;</button>
+                </div>
+                <div class="text-center">
+                    <button class="clicker-btn" onclick="playClick()">CLICK!</button>
+                    <p class="mt-16">Toque para fazer o som do clicker</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Counter Modal -->
+        <div id="counterModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Contador de Repetições</h3>
+                    <button class="close-btn" onclick="closeModal('counterModal')">&times;</button>
+                </div>
+                <div class="rep-counter">
+                    <div class="rep-count" id="repCount">0</div>
+                    <button class="btn" onclick="incrementCounter()">➕ Adicionar</button>
+                    <button class="btn secondary" onclick="resetCounter()" style="margin-left: 12px;">🔄 Zerar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Setup Modal -->
+        <div id="setupModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Configuração Inicial</h3>
+                    <button class="close-btn" onclick="closeModal('setupModal')">&times;</button>
+                </div>
+                <form id="setupForm">
+                    <div class="form-group">
+                        <label class="form-label" for="dogNameInput">Nome do seu Blue Heeler:</label>
+                        <input type="text" id="dogNameInput" class="form-control" placeholder="Ex: Max" value="Meu Blue Heeler">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="birthDate">Data de Nascimento:</label>
+                        <input type="date" id="birthDate" class="form-control" value="2024-09-01">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="experience">Seu nível de experiência:</label>
+                        <select id="experience" class="form-control">
+                            <option value="iniciante">Iniciante - Primeiro cão</option>
+                            <option value="intermediario">Intermediário - Já tive cães</option>
+                            <option value="avancado">Avançado - Experiente com treinamento</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Objetivos principais (selecione até 3):</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="obj1" value="obediencia">
+                                <label for="obj1">Obediência básica</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="obj2" value="herding">
+                                <label for="obj2">Controle de herding</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="obj3" value="truques">
+                                <label for="obj3">Truques &amp; comandos</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="obj4" value="socializacao">
+                                <label for="obj4">Socialização</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="obj5" value="problemas">
+                                <label for="obj5">Corrigir problemas</label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn full-width">Salvar &amp; Gerar Plano</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <button class="floating-btn" onclick="showScreen('training')" title="Iniciar Treino">
+            ▶️
         </button>
     </div>
 
-    <!-- Modal de Configurações -->
-    <div id="settingsModal" class="modal hidden">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>⚙️ Configurações</h2>
-                <button class="btn-close" onclick="closeSettings()">×</button>
-            </div>
-            <div class="settings-body">
-                <div class="setting-group">
-                    <h3>🐕 Informações do Cão</h3>
-                    <div class="form-group">
-                        <label>Nome:</label>
-                        <input type="text" id="dogName" placeholder="Nome do seu Blue Heeler">
-                    </div>
-                    <div class="form-group">
-                        <label>Data de Nascimento:</label>
-                        <input type="date" id="dogBirthDate" value="2025-09-01">
-                    </div>
-                </div>
-                <div class="setting-group">
-                    <h3>🎨 Aparência</h3>
-                    <label class="switch-label">
-                        <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
-                        <span>Modo Escuro</span>
-                    </label>
-                </div>
-                <div class="setting-group">
-                    <h3>💾 Dados</h3>
-                    <button class="btn btn-secondary" onclick="exportData()">
-                        📥 Exportar Dados
-                    </button>
-                    <button class="btn btn-danger" onclick="logout()">
-                        🚪 Sair
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <script>
+        // Global app state
+        let appData = {
+            dog: {
+                name: "Meu Blue Heeler",
+                birthDate: "2024-09-01",
+                experience: "iniciante",
+                objectives: ["obediencia", "socializacao"]
+            },
+            stats: {
+                totalSessions: 0,
+                currentStreak: 0,
+                overallProgress: 0,
+                completedExercises: {},
+                trainingDays: [],
+                badges: []
+            },
+            currentExercise: null,
+            timer: {
+                minutes: 5,
+                seconds: 0,
+                running: false,
+                interval: null
+            },
+            repCounter: 0
+        };
 
-    <!-- JavaScript EXTERNO - CRÍTICO PARA AZURE -->
-    <script src="/app.js"></script>
+        // Tips of the day
+        const tips = [
+            "Sessões curtas (5-10 min) são mais eficazes que longas!",
+            "Sempre termine o treino com sucesso para manter motivação.",
+            "Blue Heelers precisam de 60-90 min de exercício DIÁRIO quando adultos.",
+            "Socialize AGORA! Janela crítica fecha às 14 semanas.",
+            "Petiscos de alto valor: frango, queijo, salsicha (pequenos pedaços).",
+            "Timing é tudo: recompensa imediata (0,5s) após comportamento.",
+            "Consistência > Perfeição. Treino diário irregular é melhor que nenhum.",
+            "'Yes!' deve ser sempre o mesmo tom. Escolha seu marcador e mantenha.",
+            "Bite inhibition é CRÍTICO para Heelers. Não negligencie!",
+            "Exercício físico ANTES de treino mental = melhor foco."
+        ];
+
+        // Exercise database
+        const exercises = {
+            socializacao: {
+                title: "Socialização",
+                description: "Fundamental para desenvolvimento saudável",
+                exercises: [
+                    {
+                        id: "nome-atencao",
+                        title: "Nome e Atenção",
+                        duration: 5,
+                        description: "Ensinar o cão a responder ao nome e prestar atenção",
+                        method: "Diga o nome → quando olhar → 'Yes!' + petisco. Repita 10-15x",
+                        progression: "Casa silenciosa → com distrações → ambientes diferentes",
+                        goal: "Olhar imediatamente ao nome em 80% das vezes",
+                        tips: "Use tom alegre e consistente. Nunca use o nome para repreender."
+                    },
+                    {
+                        id: "socializacao-pessoas",
+                        title: "Socialização com Pessoas",
+                        duration: 10,
+                        description: "Exposição positiva a diferentes pessoas",
+                        method: "Apresentar 5-10 pessoas novas por semana. Pessoa oferece petisco ao filhote",
+                        progression: "Família → amigos → estranhos → diferentes idades/tipos",
+                        goal: "100+ pessoas diferentes até 14 semanas",
+                        tips: "Deixar filhote aproximar no próprio ritmo. Variar: idades, gêneros, roupas."
+                    },
+                    {
+                        id: "socializacao-caes",
+                        title: "Socialização com Cães",
+                        duration: 15,
+                        description: "Interação com outros cães de forma segura",
+                        method: "Interações supervisionadas com cães vacinados, calmos e bem socializados. 2-3x/semana",
+                        goal: "Aprender sinais caninos e brincadeira apropriada",
+                        tips: "Começar com cães adultos calmos. Supervisionar sempre."
+                    },
+                    {
+                        id: "habituacao-sons",
+                        title: "Habituação a Sons",
+                        duration: 5,
+                        description: "Acostumar com sons do ambiente",
+                        method: "YouTube: sons de aspirador, liquidificador, trovão, fogos. Começar volume 10%, aumentar gradualmente",
+                        when: "Durante brincadeira ou refeição para associação positiva",
+                        goal: "Indiferença a sons domésticos comuns",
+                        tips: "Nunca forçar. Se mostrar medo, diminuir volume."
+                    }
+                ]
+            },
+            obediencia: {
+                title: "Obediência Básica",
+                description: "Comandos fundamentais para vida em sociedade",
+                exercises: [
+                    {
+                        id: "sit",
+                        title: "Sit (Sentar)",
+                        duration: 10,
+                        description: "Comando básico essencial",
+                        method: "Lure: petisco no nariz → mover para cima/trás → bumbum desce → 'Yes!' + petisco",
+                        progression: "Com lure → sem lure → a distância → com duração → com distrações",
+                        sessions: "3x/dia, 10 repetições",
+                        goal: "Sentar com comando verbal em 3s, 90% das vezes"
+                    },
+                    {
+                        id: "down",
+                        title: "Down (Deitar)",
+                        duration: 10,
+                        description: "Comando de relaxamento e controle",
+                        method: "De sit: lure petisco para baixo entre patas → corpo desce → 'Yes!' + petisco",
+                        tip: "Pode demorar. Use shaping: recompense aproximações",
+                        goal: "Deitar com comando verbal, 80% acerto"
+                    },
+                    {
+                        id: "stay",
+                        title: "Stay (Ficar)",
+                        duration: 10,
+                        description: "Autocontrole e espera",
+                        method: "De sit/down: mão aberta 'Stay' → 1 segundo → 'Yes!' + petisco. Aumentar tempo gradualmente",
+                        progression: "1s → 5s → 10s → 30s → 1min",
+                        goal: "Stay de 30s com pessoa a 2m de distância"
+                    },
+                    {
+                        id: "come-recall",
+                        title: "Come/Recall (Vem)",
+                        duration: 10,
+                        description: "Comando de segurança vital",
+                        method: "Casa: nome + 'Come!' + agachar + braços abertos → quando vier → FESTA + petiscos múltiplos",
+                        important: "NUNCA chamar para algo negativo. Sempre recompensa máxima",
+                        progression: "1m → 3m → 5m → 10m → com distrações",
+                        goal: "Recall 100% confiável sem distrações"
+                    },
+                    {
+                        id: "leave-it",
+                        title: "Leave It (Deixa)",
+                        duration: 10,
+                        description: "Controle de impulsos",
+                        method: "Petisco em mão fechada → cão tenta pegar → espera → quando desiste → 'Yes!' + petisco melhor da outra mão",
+                        progression: "Mão → chão coberto → chão → andar perto",
+                        goal: "Ignorar item no chão com comando"
+                    }
+                ]
+            },
+            heeler_especifico: {
+                title: "Específico Blue Heeler",
+                description: "Controles específicos para a raça",
+                exercises: [
+                    {
+                        id: "bite-inhibition",
+                        title: "Bite Inhibition",
+                        duration: 10,
+                        description: "Controle da força da mordida - CRÍTICO para Heelers",
+                        method: "Durante brincadeira: morder forte → 'Ai!' agudo + parar 30s. Retomar. Ignorar mordidas leves",
+                        importance: "CRÍTICO para Blue Heelers (instinto de nip/heeling)",
+                        goal: "Controle total da força da mordida até 4-5 meses",
+                        tips: "Consistência é fundamental. Todos da família devem reagir igual."
+                    },
+                    {
+                        id: "handling",
+                        title: "Handling (Manipulação)",
+                        duration: 5,
+                        description: "Acostumar com manipulação para vet/grooming",
+                        method: "Tocar patas, orelhas, boca, cauda. DAR PETISCOS CONTINUAMENTE durante. 2-3 min/dia",
+                        progression: "Toque leve → segurar → manipular (simular corte de unha)",
+                        goal: "Cão relaxado durante manipulação vet/grooming"
+                    },
+                    {
+                        id: "controle-herding",
+                        title: "Controle de Herding",
+                        duration: 15,
+                        description: "Canalizar instinto de pastoreio adequadamente",
+                        problem: "Nip em calcanhares, perseguir/controlar movimento",
+                        solution: "Redirecionar para brinquedos, ensinar 'easy', impulse control",
+                        alternatives: "Herding balls, treibball, flyball",
+                        tips: "Não reprimir completamente - redirecionar para atividades apropriadas."
+                    }
+                ]
+            },
+            rotina: {
+                title: "Casa e Rotina",
+                description: "Estabelecer bons hábitos domésticos",
+                exercises: [
+                    {
+                        id: "potty-training",
+                        title: "Potty Training",
+                        frequency: "A cada 1-2h, após comer, brincar, acordar",
+                        method: "Levar ao local → esperar → quando fizer → 'Yes!' + festa + petisco IMEDIATAMENTE",
+                        tip: "Nunca punir acidente. Apenas limpar sem alarde",
+                        goal: "90% acertos até 12-14 semanas",
+                        duration: 5
+                    },
+                    {
+                        id: "crate-training",
+                        title: "Crate Training",
+                        start: "Semana 14-15",
+                        method: "Porta aberta + petiscos dentro → refeições dentro → fechar porta 1s → aumentar tempo",
+                        objective: "Crate = lugar seguro, não punição",
+                        goal: "Relaxar na crate por 1-2h durante dia",
+                        duration: 10
+                    },
+                    {
+                        id: "leash-walking",
+                        title: "Leash Walking",
+                        start: "Semana 16-17",
+                        method: "Coleira leve + guia. Andar → se puxar, PARAR + esperar → folga na guia → 'Yes!' + seguir",
+                        tip: "Petisco a cada 3-5 passos sem puxar",
+                        progression: "Casa → quintal → calçada calma → rua",
+                        goal: "Caminhada com guia frouxa por 5-10 min",
+                        duration: 15
+                    }
+                ]
+            }
+        };
+
+        // Daily training plan for current phase (7-14 weeks)
+        const dailyPlan = {
+            morning: [
+                { exercise: "potty-training", time: "Logo ao acordar", duration: 5 },
+                { exercise: "nome-atencao", duration: 5 },
+                { exercise: "exploracao-supervisionada", duration: 15, description: "Exploração livre em área segura" },
+                { exercise: "potty-training", time: "Após refeição", duration: 5 }
+            ],
+            afternoon: [
+                { exercise: "potty-training", duration: 5 },
+                { exercise: "socializacao-pessoas", duration: 10 },
+                { exercise: "habituacao-sons", duration: 5 },
+                { exercise: "brincadeira-livre", duration: 15, description: "Brincadeira supervisionada" },
+                { exercise: "potty-training", time: "Após refeição", duration: 5 }
+            ],
+            evening: [
+                { exercise: "potty-training", duration: 5 },
+                { exercise: "bite-inhibition", duration: 10 },
+                { exercise: "handling", duration: 5 },
+                { exercise: "potty-training", time: "Final antes de dormir", duration: 5 }
+            ]
+        };
+
+        // Badges system
+        const badges = [
+            { id: "first-week", name: "Primeira Semana!", condition: "7 dias consecutivos", icon: "🏆", unlocked: false },
+            { id: "social-butterfly", name: "Social Butterfly", condition: "50 pessoas diferentes", icon: "🦋", unlocked: false },
+            { id: "social-master", name: "Socialização Master", condition: "100 pessoas diferentes", icon: "⭐", unlocked: false },
+            { id: "basic-commands", name: "Comandos Básicos", condition: "Sit, Down, Stay dominados", icon: "🎓", unlocked: false },
+            { id: "perfect-recall", name: "Recall Perfeito", condition: "10 recalls consecutivos", icon: "🎯", unlocked: false },
+            { id: "golden-consistency", name: "Consistência de Ouro", condition: "30 dias consecutivos", icon: "👑", unlocked: false }
+        ];
+
+        // Milestones
+        const milestones = [
+            { week: 8, items: ["Responde ao nome", "Tolera handling básico", "50% acerto potty"] },
+            { week: 12, items: ["Sit confiável", "80%+ acerto potty", "Confortável com 50+ pessoas"] },
+            { week: 16, items: ["Sit/Down/Stay básico", "Leash walking iniciado", "100+ pessoas"] },
+            { week: 24, items: ["Comandos básicos sólidos", "Recall confiável", "Bem socializado"] }
+        ];
+
+        // Weekly checklist
+        const weeklyChecklist = [
+            { item: "Socialização: 5+ pessoas novas", meta: 5, current: 0 },
+            { item: "Socialização: 2+ cães novos", meta: 2, current: 0 },
+            { item: "Ambientes: 3+ lugares novos", meta: 3, current: 0 },
+            { item: "Sessões de treino: 21 (3/dia x 7)", meta: 21, current: 0 },
+            { item: "Handling: 7 sessões", meta: 7, current: 0 },
+            { item: "Sons novos: 10 diferentes", meta: 10, current: 0 }
+        ];
+
+        // Initialize app
+        function init() {
+            updateDashboard();
+            renderDailyPlan();
+            renderLibrary();
+            renderProgress();
+            renderProfile();
+            showRandomTip();
+            
+            // Check if first time user
+            if (!appData.dog.name || appData.dog.name === "Meu Blue Heeler") {
+                setTimeout(() => showSetupModal(), 1000);
+            }
+        }
+
+        // Show random tip
+        function showRandomTip() {
+            const randomTip = tips[Math.floor(Math.random() * tips.length)];
+            document.getElementById('dailyTip').textContent = randomTip;
+        }
+
+        // Update dashboard stats
+        function updateDashboard() {
+            document.getElementById('totalSessions').textContent = appData.stats.totalSessions;
+            document.getElementById('currentStreak').textContent = appData.stats.currentStreak;
+            document.getElementById('overallProgress').textContent = appData.stats.overallProgress + '%';
+            
+            // Calculate and display dog's age
+            const birthDate = new Date(appData.dog.birthDate);
+            const today = new Date();
+            const diffTime = Math.abs(today - birthDate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            const weeks = Math.floor(diffDays / 7);
+            const days = diffDays % 7;
+            
+            let ageText;
+            if (weeks === 0) {
+                ageText = `${diffDays} dias`;
+            } else {
+                ageText = `${weeks} semana${weeks > 1 ? 's' : ''}${days > 0 ? ` e ${days} dias` : ''}`;
+            }
+            
+            document.getElementById('dogAge').textContent = `${ageText} • Socialização Crítica`;
+            document.getElementById('dogName').textContent = appData.dog.name;
+        }
+
+        // Render daily training plan
+        function renderDailyPlan() {
+            renderTimeSection('morningExercises', dailyPlan.morning, 'morning');
+            renderTimeSection('afternoonExercises', dailyPlan.afternoon, 'afternoon');
+            renderTimeSection('eveningExercises', dailyPlan.evening, 'evening');
+        }
+
+        function renderTimeSection(containerId, exercisesList, timeId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            exercisesList.forEach((ex, index) => {
+                const exerciseId = `${timeId}-${index}`;
+                const isCompleted = appData.stats.completedExercises[exerciseId] || false;
+                
+                const exerciseDiv = document.createElement('div');
+                exerciseDiv.className = `exercise-item ${isCompleted ? 'completed' : ''}`;
+                exerciseDiv.onclick = () => showExerciseDetail(ex, exerciseId);
+                
+                exerciseDiv.innerHTML = `
+                    <div class="exercise-checkbox ${isCompleted ? 'checked' : ''}" onclick="event.stopPropagation(); toggleExercise('${exerciseId}')">
+                        ${isCompleted ? '✓' : ''}
+                    </div>
+                    <div class="exercise-info">
+                        <div class="exercise-title">${getExerciseTitle(ex.exercise) || ex.description || ex.exercise}</div>
+                        <div class="exercise-duration">${ex.duration} min${ex.time ? ' • ' + ex.time : ''}</div>
+                    </div>
+                `;
+                
+                container.appendChild(exerciseDiv);
+            });
+        }
+
+        function getExerciseTitle(exerciseKey) {
+            // Search for exercise in all categories
+            for (const category in exercises) {
+                const exercise = exercises[category].exercises?.find(ex => ex.id === exerciseKey);
+                if (exercise) return exercise.title;
+            }
+            
+            // Fallback titles
+            const fallbackTitles = {
+                'potty-training': 'Potty Training',
+                'nome-atencao': 'Nome e Atenção',
+                'exploracao-supervisionada': 'Exploração Supervisionada',
+                'socializacao-pessoas': 'Socialização com Pessoas',
+                'habituacao-sons': 'Habituação a Sons',
+                'brincadeira-livre': 'Brincadeira Livre',
+                'bite-inhibition': 'Bite Inhibition',
+                'handling': 'Handling'
+            };
+            
+            return fallbackTitles[exerciseKey] || exerciseKey;
+        }
+
+        // Toggle exercise completion
+        function toggleExercise(exerciseId) {
+            const isCompleted = appData.stats.completedExercises[exerciseId] || false;
+            appData.stats.completedExercises[exerciseId] = !isCompleted;
+            
+            if (!isCompleted) {
+                appData.stats.totalSessions++;
+                showSuccessAnimation();
+                checkBadges();
+            } else {
+                appData.stats.totalSessions = Math.max(0, appData.stats.totalSessions - 1);
+            }
+            
+            updateDashboard();
+            renderDailyPlan();
+            updateProgress();
+        }
+
+        // Show success animation
+        function showSuccessAnimation() {
+            // Create floating success message
+            const message = document.createElement('div');
+            message.textContent = ['Excelente!', 'Ótimo trabalho!', 'Continue assim!', 'Parabéns!'][Math.floor(Math.random() * 4)];
+            message.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: var(--color-success);
+                color: var(--color-btn-primary-text);
+                padding: 16px 24px;
+                border-radius: 12px;
+                font-weight: 600;
+                z-index: 9999;
+                animation: bounce 0.6s ease-in-out;
+                box-shadow: var(--shadow-lg);
+            `;
+            
+            document.body.appendChild(message);
+            setTimeout(() => message.remove(), 1000);
+        }
+
+        // Check and unlock badges
+        function checkBadges() {
+            // First week badge
+            if (appData.stats.currentStreak >= 7 && !badges.find(b => b.id === 'first-week').unlocked) {
+                unlockBadge('first-week');
+            }
+            
+            // Golden consistency badge
+            if (appData.stats.currentStreak >= 30 && !badges.find(b => b.id === 'golden-consistency').unlocked) {
+                unlockBadge('golden-consistency');
+            }
+        }
+
+        function unlockBadge(badgeId) {
+            const badge = badges.find(b => b.id === badgeId);
+            if (badge) {
+                badge.unlocked = true;
+                showBadgeUnlock(badge);
+            }
+        }
+
+        function showBadgeUnlock(badge) {
+            const message = document.createElement('div');
+            message.innerHTML = `
+                <div style="font-size: 40px; margin-bottom: 8px;">${badge.icon}</div>
+                <div style="font-weight: 600; margin-bottom: 4px;">Conquista Desbloqueada!</div>
+                <div>${badge.name}</div>
+            `;
+            message.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: var(--color-surface);
+                border: 2px solid var(--color-primary);
+                color: var(--color-text);
+                padding: 24px;
+                border-radius: 16px;
+                text-align: center;
+                z-index: 9999;
+                animation: bounce 0.8s ease-in-out;
+                box-shadow: var(--shadow-lg);
+            `;
+            
+            document.body.appendChild(message);
+            setTimeout(() => message.remove(), 3000);
+        }
+
+        // Show exercise detail
+        function showExerciseDetail(exercise, exerciseId) {
+            appData.currentExercise = { ...exercise, id: exerciseId };
+            
+            // Find full exercise details
+            let fullExercise = null;
+            for (const category in exercises) {
+                fullExercise = exercises[category].exercises?.find(ex => ex.id === exercise.exercise);
+                if (fullExercise) break;
+            }
+            
+            const title = fullExercise?.title || getExerciseTitle(exercise.exercise) || exercise.description;
+            document.getElementById('modalTitle').textContent = title;
+            
+            let content = `<div class="exercise-duration-badge">${exercise.duration} min</div>`;
+            
+            if (fullExercise) {
+                content += `<div class="exercise-description">${fullExercise.description}</div>`;
+                
+                if (fullExercise.method) {
+                    content += `<div class="mb-16"><div class="meta-label">Como fazer:</div>${fullExercise.method}</div>`;
+                }
+                
+                if (fullExercise.progression) {
+                    content += `<div class="mb-16"><div class="meta-label">Progressão:</div>${fullExercise.progression}</div>`;
+                }
+                
+                if (fullExercise.goal) {
+                    content += `<div class="mb-16"><div class="meta-label">Meta:</div>${fullExercise.goal}</div>`;
+                }
+                
+                if (fullExercise.tips) {
+                    content += `<div class="mb-16"><div class="meta-label">Dicas:</div>${fullExercise.tips}</div>`;
+                }
+                
+                if (fullExercise.important) {
+                    content += `<div class="mb-16 text-error"><div class="meta-label">Importante:</div>${fullExercise.important}</div>`;
+                }
+            } else {
+                content += `<div class="exercise-description">${exercise.description || 'Exercício fundamental para o desenvolvimento do seu Blue Heeler.'}</div>`;
+            }
+            
+            document.getElementById('modalContent').innerHTML = content;
+            document.getElementById('exerciseModal').classList.add('active');
+        }
+
+        // Mark exercise as complete
+        function markExerciseComplete() {
+            if (appData.currentExercise) {
+                toggleExercise(appData.currentExercise.id);
+                closeModal('exerciseModal');
+            }
+        }
+
+        // Render library
+        function renderLibrary() {
+            const container = document.getElementById('libraryContent');
+            container.innerHTML = '';
+            
+            for (const categoryKey in exercises) {
+                const category = exercises[categoryKey];
+                
+                // Category header
+                const headerDiv = document.createElement('div');
+                headerDiv.className = 'category-header';
+                headerDiv.innerHTML = `
+                    <div class="category-title">${category.title}</div>
+                    <div class="category-desc">${category.description}</div>
+                `;
+                container.appendChild(headerDiv);
+                
+                // Exercises in category
+                if (category.exercises) {
+                    category.exercises.forEach(exercise => {
+                        const exerciseDiv = document.createElement('div');
+                        exerciseDiv.className = 'exercise-card';
+                        exerciseDiv.onclick = () => showLibraryExercise(exercise);
+                        
+                        exerciseDiv.innerHTML = `
+                            <div class="exercise-card-header">
+                                <div class="exercise-card-title">${exercise.title}</div>
+                                <div class="exercise-duration-badge">${exercise.duration || 10} min</div>
+                            </div>
+                            <div class="exercise-description">${exercise.description}</div>
+                            <div class="exercise-meta">
+                                ${exercise.goal ? `<div class="meta-item"><span class="meta-label">Meta:</span> ${exercise.goal.substring(0, 50)}...</div>` : ''}
+                            </div>
+                        `;
+                        
+                        container.appendChild(exerciseDiv);
+                    });
+                }
+            }
+        }
+
+        function showLibraryExercise(exercise) {
+            appData.currentExercise = { ...exercise, id: 'library-' + exercise.id };
+            
+            document.getElementById('modalTitle').textContent = exercise.title;
+            
+            let content = `<div class="exercise-duration-badge">${exercise.duration || 10} min</div>`;
+            content += `<div class="exercise-description">${exercise.description}</div>`;
+            
+            if (exercise.method) {
+                content += `<div class="mb-16"><div class="meta-label">Como fazer:</div>${exercise.method}</div>`;
+            }
+            
+            if (exercise.progression) {
+                content += `<div class="mb-16"><div class="meta-label">Progressão:</div>${exercise.progression}</div>`;
+            }
+            
+            if (exercise.goal) {
+                content += `<div class="mb-16"><div class="meta-label">Meta:</div>${exercise.goal}</div>`;
+            }
+            
+            if (exercise.tips) {
+                content += `<div class="mb-16"><div class="meta-label">Dicas:</div>${exercise.tips}</div>`;
+            }
+            
+            if (exercise.important) {
+                content += `<div class="mb-16 text-error"><div class="meta-label">Importante:</div>${exercise.important}</div>`;
+            }
+            
+            if (exercise.frequency) {
+                content += `<div class="mb-16"><div class="meta-label">Frequência:</div>${exercise.frequency}</div>`;
+            }
+            
+            if (exercise.sessions) {
+                content += `<div class="mb-16"><div class="meta-label">Sessões:</div>${exercise.sessions}</div>`;
+            }
+            
+            document.getElementById('modalContent').innerHTML = content;
+            document.getElementById('exerciseModal').classList.add('active');
+        }
+
+        // Render progress screen
+        function renderProgress() {
+            renderBadges();
+            renderCalendar();
+            renderMilestones();
+            renderWeeklyChecklist();
+        }
+
+        function renderBadges() {
+            const container = document.getElementById('badgesContainer');
+            container.innerHTML = '';
+            
+            badges.forEach(badge => {
+                const badgeDiv = document.createElement('div');
+                badgeDiv.className = `badge ${badge.unlocked ? '' : 'locked'}`;
+                badgeDiv.innerHTML = `
+                    <span>${badge.icon}</span>
+                    <span>${badge.name}</span>
+                `;
+                container.appendChild(badgeDiv);
+            });
+        }
+
+        function renderCalendar() {
+            const container = document.getElementById('trainingCalendar');
+            container.innerHTML = '';
+            
+            // Generate last 30 days
+            const today = new Date();
+            for (let i = 29; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'calendar-day';
+                if (i === 0) dayDiv.classList.add('today');
+                
+                // Check if training was done on this day (simplified logic)
+                const hasTraining = Math.random() < 0.6; // Simulated data
+                if (hasTraining && i > 0) {
+                    dayDiv.classList.add('completed');
+                }
+                
+                dayDiv.textContent = date.getDate();
+                container.appendChild(dayDiv);
+            }
+        }
+
+        function renderMilestones() {
+            const container = document.getElementById('milestonesContainer');
+            container.innerHTML = '';
+            
+            milestones.forEach(milestone => {
+                const milestoneDiv = document.createElement('div');
+                milestoneDiv.className = 'exercise-card';
+                
+                const currentWeek = 7; // Current week of dog's age (hardcoded for demo)
+                const isReached = currentWeek >= milestone.week;
+                
+                milestoneDiv.innerHTML = `
+                    <div class="exercise-card-header">
+                        <div class="exercise-card-title">Semana ${milestone.week}</div>
+                        <div class="badge ${isReached ? '' : 'locked'}">
+                            ${isReached ? '✅' : '🔒'}
+                        </div>
+                    </div>
+                    <ul style="margin: 0; padding-left: 20px;">
+                        ${milestone.items.map(item => `<li>${item}</li>`).join('')}
+                    </ul>
+                `;
+                
+                container.appendChild(milestoneDiv);
+            });
+        }
+
+        function renderWeeklyChecklist() {
+            const container = document.getElementById('weeklyChecklist');
+            container.innerHTML = '';
+            
+            weeklyChecklist.forEach(item => {
+                const progress = Math.floor((item.current / item.meta) * 100);
+                
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'exercise-card';
+                itemDiv.innerHTML = `
+                    <div class="exercise-card-header">
+                        <div class="exercise-card-title">${item.item}</div>
+                        <div class="exercise-duration-badge">${item.current}/${item.meta}</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${progress}%"></div>
+                    </div>
+                `;
+                
+                container.appendChild(itemDiv);
+            });
+        }
+
+        function updateProgress() {
+            // Calculate overall progress based on completed exercises
+            const totalExercises = Object.keys(dailyPlan.morning).length + 
+                                 Object.keys(dailyPlan.afternoon).length + 
+                                 Object.keys(dailyPlan.evening).length;
+            const completedToday = Object.keys(appData.stats.completedExercises).length;
+            appData.stats.overallProgress = Math.min(100, Math.floor((completedToday / (totalExercises * 7)) * 100));
+        }
+
+        // Render profile
+        function renderProfile() {
+            document.getElementById('profileName').textContent = appData.dog.name;
+            document.getElementById('profileAge').textContent = document.getElementById('dogAge').textContent.split(' •')[0];
+            
+            // Calculate profile stats
+            const totalDays = appData.stats.trainingDays.length || 0;
+            const totalExercises = appData.stats.totalSessions || 0;
+            const consistency = totalDays > 0 ? Math.floor((totalExercises / (totalDays * 3)) * 100) : 0;
+            
+            document.getElementById('profileTotalDays').textContent = totalDays;
+            document.getElementById('profileTotalExercises').textContent = totalExercises;
+            document.getElementById('profileConsistency').textContent = consistency + '%';
+        }
+
+        // Timer functions
+        function startTimer() {
+            showModal('timerModal');
+            resetTimer();
+        }
+
+        function toggleTimer() {
+            if (appData.timer.running) {
+                pauseTimer();
+            } else {
+                resumeTimer();
+            }
+        }
+
+        function resumeTimer() {
+            appData.timer.running = true;
+            document.getElementById('timerBtn').innerHTML = '⏸️ Pausar';
+            
+            appData.timer.interval = setInterval(() => {
+                if (appData.timer.seconds > 0) {
+                    appData.timer.seconds--;
+                } else if (appData.timer.minutes > 0) {
+                    appData.timer.minutes--;
+                    appData.timer.seconds = 59;
+                } else {
+                    // Timer finished
+                    pauseTimer();
+                    playFinishSound();
+                    alert('Tempo esgotado! 🎉');
+                    return;
+                }
+                updateTimerDisplay();
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            appData.timer.running = false;
+            document.getElementById('timerBtn').innerHTML = '▶️ Continuar';
+            if (appData.timer.interval) {
+                clearInterval(appData.timer.interval);
+            }
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            appData.timer.minutes = 5;
+            appData.timer.seconds = 0;
+            document.getElementById('timerBtn').innerHTML = '▶️ Iniciar';
+            updateTimerDisplay();
+        }
+
+        function updateTimerDisplay() {
+            const display = `${appData.timer.minutes.toString().padStart(2, '0')}:${appData.timer.seconds.toString().padStart(2, '0')}`;
+            document.getElementById('timerDisplay').textContent = display;
+        }
+
+        function playFinishSound() {
+            // Create audio context for sound
+            if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
+                const AudioCtx = AudioContext || webkitAudioContext;
+                const audioCtx = new AudioCtx();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                oscillator.frequency.value = 800;
+                gainNode.gain.value = 0.3;
+                
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.5);
+            }
+        }
+
+        // Clicker functions
+        function showClicker() {
+            showModal('clickerModal');
+        }
+
+        function playClick() {
+            // Create click sound
+            if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
+                const AudioCtx = AudioContext || webkitAudioContext;
+                const audioCtx = new AudioCtx();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                oscillator.frequency.value = 2000;
+                oscillator.type = 'square';
+                gainNode.gain.value = 0.1;
+                
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.05);
+            }
+            
+            // Visual feedback
+            const btn = document.querySelector('.clicker-btn');
+            btn.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                btn.style.transform = 'scale(1)';
+            }, 100);
+        }
+
+        // Counter functions
+        function showCounter() {
+            showModal('counterModal');
+        }
+
+        function incrementCounter() {
+            appData.repCounter++;
+            document.getElementById('repCount').textContent = appData.repCounter;
+        }
+
+        function resetCounter() {
+            appData.repCounter = 0;
+            document.getElementById('repCount').textContent = appData.repCounter;
+        }
+
+        // Setup modal functions
+        function showSetupModal() {
+            // Pre-fill form with current data
+            document.getElementById('dogNameInput').value = appData.dog.name;
+            document.getElementById('birthDate').value = appData.dog.birthDate;
+            document.getElementById('experience').value = appData.dog.experience;
+            
+            // Check objective checkboxes
+            appData.dog.objectives.forEach(obj => {
+                const checkbox = document.querySelector(`input[value="${obj}"]`);
+                if (checkbox) checkbox.checked = true;
+            });
+            
+            showModal('setupModal');
+        }
+
+        function handleSetupForm(event) {
+            event.preventDefault();
+            
+            // Get form data
+            appData.dog.name = document.getElementById('dogNameInput').value;
+            appData.dog.birthDate = document.getElementById('birthDate').value;
+            appData.dog.experience = document.getElementById('experience').value;
+            
+            // Get selected objectives
+            const objectiveCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            appData.dog.objectives = Array.from(objectiveCheckboxes).map(cb => cb.value);
+            
+            // Update UI
+            updateDashboard();
+            renderProfile();
+            closeModal('setupModal');
+            
+            // Show success message
+            setTimeout(() => {
+                alert('Configuração salva! Seu plano personalizado foi gerado. 🎉');
+            }, 500);
+        }
+
+        // Modal functions
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Navigation functions
+        function showScreen(screenId) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Show selected screen
+            document.getElementById(screenId).classList.add('active');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`[onclick="showScreen('${screenId}')"]`).classList.add('active');
+        }
+
+        // Event listeners
+        document.getElementById('setupForm').addEventListener('submit', handleSetupForm);
+
+        // Close modals when clicking outside
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
+
+        // Initialize app when page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
 </body>
 </html>

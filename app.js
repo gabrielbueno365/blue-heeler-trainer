@@ -1,849 +1,856 @@
-// =====================================================
-// BLUE HEELER TRAINER PRO - APPLICATION LOGIC
-// Versão 2.0 - Sistema Completo de Treinamento
-// =====================================================
-
-// === CONFIGURAÇÃO ===
-const CONFIG = {
-	API_BASE_URL: "/api", // Azure Static Web Apps integrated API
-	SYNC_INTERVAL: 30000, // 30 segundos
-	DOG_BIRTH_DATE: "2025-09-01",
-	AUTO_SAVE: true,
+let appData = {
+  dog: {
+    name: "Meu Blue Heeler",
+    birthDate: "2024-09-01",
+    experience: "iniciante",
+    objectives: ["obediencia", "socializacao"]
+  },
+  stats: {
+    totalSessions: 0,
+    currentStreak: 0,
+    overallProgress: 0,
+    completedExercises: {},
+    trainingDays: [],
+    badges: []
+  },
+  currentExercise: null,
+  timer: {
+    minutes: 5,
+    seconds: 0,
+    running: false,
+    interval: null
+  },
+  repCounter: 0
 };
 
-// === ESTADO GLOBAL ===
-let appState = {
-	dogData: {
-		name: "Meu Blue Heeler",
-		birthDate: CONFIG.DOG_BIRTH_DATE,
-		goals: [],
-	},
-	dailyTraining: {},
-	badges: [],
-	streak: 0,
-	totalSessions: 0,
-	lastSync: null,
+const tips = [
+  "Sessões curtas (5-10 min) são mais eficazes que longas!",
+  "Sempre termine o treino com sucesso para manter motivação.",
+  "Blue Heelers precisam de 60-90 min de exercício DIÁRIO quando adultos.",
+  "Socialize AGORA! Janela crítica fecha às 14 semanas.",
+  "Petiscos de alto valor: frango, queijo, salsicha (pequenos pedaços).",
+  "Timing é tudo: recompensa imediata (0,5s) após comportamento.",
+  "Consistência > Perfeição. Treino diário irregular é melhor que nenhum.",
+  "'Yes!' deve ser sempre o mesmo tom. Escolha seu marcador e mantenha.",
+  "Bite inhibition é CRÍTICO para Heelers. Não negligencie!",
+  "Exercício físico ANTES de treino mental = melhor foco."
+];
+
+const exercises = {
+  socializacao: {
+    title: "Socialização",
+    description: "Fundamental para desenvolvimento saudável",
+    exercises: [
+      {
+        id: "nome-atencao",
+        title: "Nome e Atenção",
+        duration: 5,
+        description: "Ensinar o cão a responder ao nome e prestar atenção",
+        method: "Diga o nome → quando olhar → 'Yes!' + petisco. Repita 10-15x",
+        progression: "Casa silenciosa → com distrações → ambientes diferentes",
+        goal: "Olhar imediatamente ao nome em 80% das vezes",
+        tips: "Use tom alegre e consistente. Nunca use o nome para repreender."
+      },
+      {
+        id: "socializacao-pessoas",
+        title: "Socialização com Pessoas",
+        duration: 10,
+        description: "Exposição positiva a diferentes pessoas",
+        method: "Apresentar 5-10 pessoas novas por semana. Pessoa oferece petisco ao filhote",
+        progression: "Família → amigos → estranhos → diferentes idades/tipos",
+        goal: "100+ pessoas diferentes até 14 semanas",
+        tips: "Deixar filhote aproximar no próprio ritmo. Variar: idades, gêneros, roupas."
+      },
+      {
+        id: "socializacao-caes",
+        title: "Socialização com Cães",
+        duration: 15,
+        description: "Interação com outros cães de forma segura",
+        method: "Interações supervisionadas com cães vacinados, calmos e bem socializados. 2-3x/semana",
+        goal: "Aprender sinais caninos e brincadeira apropriada",
+        tips: "Começar com cães adultos calmos. Supervisionar sempre."
+      },
+      {
+        id: "habituacao-sons",
+        title: "Habituação a Sons",
+        duration: 5,
+        description: "Acostumar com sons do ambiente",
+        method: "YouTube: sons de aspirador, liquidificador, trovão, fogos. Começar volume 10%, aumentar gradualmente",
+        goal: "Indiferença a sons domésticos comuns",
+        tips: "Nunca forçar. Se mostrar medo, diminuir volume."
+      }
+    ]
+  },
+  obediencia: {
+    title: "Obediência Básica",
+    description: "Comandos fundamentais para vida em sociedade",
+    exercises: [
+      {
+        id: "sit",
+        title: "Sit (Sentar)",
+        duration: 10,
+        description: "Comando básico essencial",
+        method: "Lure: petisco no nariz → mover para cima/trás → bumbum desce → 'Yes!' + petisco",
+        progression: "Com lure → sem lure → a distância → com duração → com distrações",
+        goal: "Sentar com comando verbal em 3s, 90% das vezes"
+      },
+      {
+        id: "down",
+        title: "Down (Deitar)",
+        duration: 10,
+        description: "Comando de relaxamento e controle",
+        method: "De sit: lure petisco para baixo entre patas → corpo desce → 'Yes!' + petisco",
+        tips: "Pode demorar. Use shaping: recompense aproximações",
+        goal: "Deitar com comando verbal, 80% acerto"
+      },
+      {
+        id: "stay",
+        title: "Stay (Ficar)",
+        duration: 10,
+        description: "Autocontrole e espera",
+        method: "De sit/down: mão aberta 'Stay' → 1 segundo → 'Yes!' + petisco. Aumentar tempo gradualmente",
+        progression: "1s → 5s → 10s → 30s → 1min",
+        goal: "Stay de 30s com pessoa a 2m de distância"
+      },
+      {
+        id: "come-recall",
+        title: "Come/Recall (Vem)",
+        duration: 10,
+        description: "Comando de segurança vital",
+        method: "Casa: nome + 'Come!' + agachar + braços abertos → quando vier → FESTA + petiscos múltiplos",
+        important: "NUNCA chamar para algo negativo. Sempre recompensa máxima",
+        progression: "1m → 3m → 5m → 10m → com distrações",
+        goal: "Recall 100% confiável sem distrações"
+      },
+      {
+        id: "leave-it",
+        title: "Leave It (Deixa)",
+        duration: 10,
+        description: "Controle de impulsos",
+        method: "Petisco em mão fechada → cão tenta pegar → espera → quando desiste → 'Yes!' + petisco melhor da outra mão",
+        progression: "Mão → chão coberto → chão → andar perto",
+        goal: "Ignorar item no chão com comando"
+      }
+    ]
+  },
+  heeler_especifico: {
+    title: "Específico Blue Heeler",
+    description: "Controles específicos para a raça",
+    exercises: [
+      {
+        id: "bite-inhibition",
+        title: "Bite Inhibition",
+        duration: 10,
+        description: "Controle da força da mordida - CRÍTICO para Heelers",
+        method: "Durante brincadeira: morder forte → 'Ai!' agudo + parar 30s. Retomar. Ignorar mordidas leves",
+        importance: "CRÍTICO para Blue Heelers (instinto de nip/heeling)",
+        goal: "Controle total da força da mordida até 4-5 meses",
+        tips: "Consistência é fundamental. Todos da família devem reagir igual."
+      },
+      {
+        id: "handling",
+        title: "Handling (Manipulação)",
+        duration: 5,
+        description: "Acostumar com manipulação para vet/grooming",
+        method: "Tocar patas, orelhas, boca, cauda. DAR PETISCOS CONTINUAMENTE durante. 2-3 min/dia",
+        progression: "Toque leve → segurar → manipular (simular corte de unha)",
+        goal: "Cão relaxado durante manipulação vet/grooming"
+      },
+      {
+        id: "controle-herding",
+        title: "Controle de Herding",
+        duration: 15,
+        description: "Canalizar instinto de pastoreio adequadamente",
+        problem: "Nip em calcanhares, perseguir/controlar movimento",
+        solution: "Redirecionar para brinquedos, ensinar 'easy', impulse control",
+        alternatives: "Herding balls, treibball, flyball",
+        tips: "Não reprimir completamente - redirecionar para atividades apropriadas."
+      }
+    ]
+  },
+  rotina: {
+    title: "Casa e Rotina",
+    description: "Estabelecer bons hábitos domésticos",
+    exercises: [
+      {
+        id: "potty-training",
+        title: "Potty Training",
+        frequency: "A cada 1-2h, após comer, brincar, acordar",
+        method: "Levar ao local → esperar → quando fizer → 'Yes!' + festa + petisco IMEDIATAMENTE",
+        tips: "Nunca punir acidente. Apenas limpar sem alarde",
+        goal: "90% acertos até 12-14 semanas",
+        duration: 5
+      },
+      {
+        id: "crate-training",
+        title: "Crate Training",
+        start: "Semana 14-15",
+        method: "Porta aberta + petiscos dentro → refeições dentro → fechar porta 1s → aumentar tempo",
+        objective: "Crate = lugar seguro, não punição",
+        goal: "Relaxar na crate por 1-2h durante dia",
+        duration: 10
+      },
+      {
+        id: "leash-walking",
+        title: "Leash Walking",
+        start: "Semana 16-17",
+        method: "Coleira leve + guia. Andar → se puxar, PARAR + esperar → folga na guia → 'Yes!' + seguir",
+        tips: "Petisco a cada 3-5 passos sem puxar",
+        progression: "Casa → quintal → calçada calma → rua",
+        goal: "Caminhada com guia frouxa por 5-10 min",
+        duration: 15
+      }
+    ]
+  }
 };
 
-// === EXERCÍCIOS DE TREINAMENTO ===
-const TRAINING_EXERCISES = [
-	{
-		id: "potty",
-		name: "🚽 Potty Training",
-		description: "Levar ao local apropriado a cada 1-2h",
-		duration: "5 min",
-		category: "básico",
-		difficulty: "easy",
-		phase: 1,
-	},
-	{
-		id: "nome",
-		name: "🎯 Nome e Atenção",
-		description: "Responder ao nome com contato visual",
-		duration: "5 min",
-		category: "obediência",
-		difficulty: "easy",
-		phase: 1,
-	},
-	{
-		id: "exploracao",
-		name: "🌳 Exploração Supervisionada",
-		description: "Diferentes superfícies e ambientes",
-		duration: "15 min",
-		category: "socialização",
-		difficulty: "easy",
-		phase: 1,
-	},
-	{
-		id: "socializacao_pessoas",
-		name: "👥 Socialização com Pessoas",
-		description: "Apresentar 2-3 pessoas diferentes",
-		duration: "10 min",
-		category: "socialização",
-		difficulty: "medium",
-		phase: 1,
-	},
-	{
-		id: "sons",
-		name: "🔊 Habituação a Sons",
-		description: "Sons domésticos em volume baixo",
-		duration: "5 min",
-		category: "socialização",
-		difficulty: "easy",
-		phase: 1,
-	},
-	{
-		id: "brincadeira",
-		name: "🎾 Brincadeira Interativa",
-		description: "Brinquedos apropriados, sem nipping",
-		duration: "15 min",
-		category: "enriquecimento",
-		difficulty: "easy",
-		phase: 1,
-	},
-	{
-		id: "bite_inhibition",
-		name: "🦷 Bite Inhibition",
-		description: "Treino de boca gentil",
-		duration: "10 min",
-		category: "comportamento",
-		difficulty: "medium",
-		phase: 1,
-	},
-	{
-		id: "handling",
-		name: "✋ Handling e Manipulação",
-		description: "Tocar patas, orelhas, boca",
-		duration: "5 min",
-		category: "básico",
-		difficulty: "easy",
-		phase: 1,
-	},
+const dailyPlan = {
+  morning: [
+    { exercise: "potty-training", time: "Logo ao acordar", duration: 5 },
+    { exercise: "nome-atencao", duration: 5 },
+    { exercise: "exploracao-supervisionada", duration: 15, description: "Exploração livre em área segura" },
+    { exercise: "potty-training", time: "Após refeição", duration: 5 }
+  ],
+  afternoon: [
+    { exercise: "potty-training", duration: 5 },
+    { exercise: "socializacao-pessoas", duration: 10 },
+    { exercise: "habituacao-sons", duration: 5 },
+    { exercise: "brincadeira-livre", duration: 15, description: "Brincadeira supervisionada" },
+    { exercise: "potty-training", time: "Após refeição", duration: 5 }
+  ],
+  evening: [
+    { exercise: "potty-training", duration: 5 },
+    { exercise: "bite-inhibition", duration: 10 },
+    { exercise: "handling", duration: 5 },
+    { exercise: "potty-training", time: "Final antes de dormir", duration: 5 }
+  ]
+};
+
+const badges = [
+  { id: "first-week", name: "Primeira Semana!", condition: "7 dias consecutivos", icon: "🏆", unlocked: false },
+  { id: "social-butterfly", name: "Social Butterfly", condition: "50 pessoas diferentes", icon: "🦋", unlocked: false },
+  { id: "social-master", name: "Socialização Master", condition: "100 pessoas diferentes", icon: "⭐", unlocked: false },
+  { id: "basic-commands", name: "Comandos Básicos", condition: "Sit, Down, Stay dominados", icon: "🎓", unlocked: false },
+  { id: "perfect-recall", name: "Recall Perfeito", condition: "10 recalls consecutivos", icon: "🎯", unlocked: false },
+  { id: "golden-consistency", name: "Consistência de Ouro", condition: "30 dias consecutivos", icon: "👑", unlocked: false }
 ];
 
-// === BIBLIOTECA DE EXERCÍCIOS ===
-const LIBRARY_CONTENT = [
-	{
-		id: "socialização-crítica",
-		title: "Socialização no Período Crítico",
-		description:
-			"Protocolo completo para expor seu filhote a 100+ experiências positivas",
-		icon: "👥",
-		duration: "8-16 semanas",
-		difficulty: "medium",
-		content: `
-            <h3>Por que é Crítico?</h3>
-            <p>O período de 5-16 semanas é uma janela neurológica única onde o cérebro está programado para aceitar novas experiências. Após isso, a neofobia (medo do novo) aumenta drasticamente.</p>
-            
-            <h3>Checklist de Socialização</h3>
-            <ul>
-                <li><strong>100+ Pessoas:</strong> Idades, etnias, gêneros, roupas, acessórios</li>
-                <li><strong>20+ Cães:</strong> Tamanhos, idades, raças diferentes</li>
-                <li><strong>50+ Ambientes:</strong> Casas, parques, pet shops, estacionamentos</li>
-                <li><strong>Superfícies:</strong> Grama, concreto, madeira, metal, areia</li>
-                <li><strong>Sons:</strong> Aspirador, liquidificador, trovão, fogos, trânsito</li>
-            </ul>
-            
-            <h3>Como Fazer Corretamente</h3>
-            <p>Cada experiência deve ser:</p>
-            <ul>
-                <li>✅ Curta (5-15 minutos)</li>
-                <li>✅ Positiva (petiscos de alto valor)</li>
-                <li>✅ No ritmo do filhote (sem forçar)</li>
-                <li>✅ Abaixo do limiar de medo</li>
-            </ul>
-        `,
-	},
-	{
-		id: "bite-inhibition",
-		title: "Bite Inhibition para Blue Heelers",
-		description: "Técnica essencial para controlar o instinto de nip/heeling",
-		icon: "🦷",
-		duration: "8-18 semanas",
-		difficulty: "hard",
-		content: `
-            <h3>Por que Blue Heelers Precisam Disso</h3>
-            <p>Blue Heelers foram criados para controlar gado mordiscando calcanhares. Este instinto é GENÉTICO e não pode ser eliminado, apenas redirecionado.</p>
-            
-            <h3>Protocolo de Time-Out Reverso</h3>
-            <ol>
-                <li>Durante brincadeira, se morder com força:</li>
-                <li>Emita um "Ai!" agudo</li>
-                <li>Deixe sua mão mole</li>
-                <li>Se continuar: Levante-se e saia da área por 30-60s</li>
-                <li>Retorne e reinicie brincadeira calma</li>
-            </ol>
-            
-            <h3>O Que NÃO Fazer</h3>
-            <ul>
-                <li>❌ Nunca bata ou grite</li>
-                <li>❌ Não segure o focinho</li>
-                <li>❌ Evite brincadeiras muito agitadas</li>
-            </ul>
-            
-            <h3>Meta</h3>
-            <p>Controle total da pressão de mordida até 16-18 semanas.</p>
-        `,
-	},
-	{
-		id: "recall-confiavel",
-		title: "Recall 100% Confiável",
-		description: "O comando mais importante para segurança do seu cão",
-		icon: "📣",
-		duration: "12+ semanas",
-		difficulty: "hard",
-		content: `
-            <h3>Por que é Difícil com Blue Heelers</h3>
-            <p>Blue Heelers têm alto impulso de caça e independência. O recall deve ser construído metodicamente.</p>
-            
-            <h3>Protocolo de Progressão</h3>
-            <ol>
-                <li><strong>Fase 1:</strong> Casa, sem distrações, 1-2 metros</li>
-                <li><strong>Fase 2:</strong> Casa, distrações leves, 3-5 metros</li>
-                <li><strong>Fase 3:</strong> Quintal, sem distrações, 5-10 metros</li>
-                <li><strong>Fase 4:</strong> Quintal, distrações moderadas</li>
-                <li><strong>Fase 5:</strong> Parque com guia longa (15-30m)</li>
-                <li><strong>Fase 6:</strong> Área segura sem guia</li>
-            </ol>
-            
-            <h3>Regras de Ouro</h3>
-            <ul>
-                <li>✅ SEMPRE recompense com festa + petiscos múltiplos</li>
-                <li>✅ NUNCA chame para algo negativo</li>
-                <li>✅ Use palavra especial ("VEM" vs "aqui")</li>
-                <li>✅ Pratique 10-20x por dia</li>
-            </ul>
-        `,
-	},
-	{
-		id: "enriquecimento-mental",
-		title: "Enriquecimento Mental Diário",
-		description: "Essencial para prevenir comportamentos destrutivos",
-		icon: "🧩",
-		duration: "Diário - 30min",
-		difficulty: "easy",
-		content: `
-            <h3>Por que É Crucial</h3>
-            <p>Blue Heelers precisam de 60-90 min de exercício físico + 30-60 min de estimulação mental. Sem isso, criam seus próprios "trabalhos" (geralmente destrutivos).</p>
-            
-            <h3>Atividades Caseiras Gratuitas</h3>
-            <ul>
-                <li><strong>Puzzle Feeders:</strong> Garrafas PET com furos, caixas de papelão</li>
-                <li><strong>Nosework:</strong> Esconder petiscos pela casa</li>
-                <li><strong>Toalha Enrolada:</strong> Petiscos entre dobras de toalha</li>
-                <li><strong>Caixas de Papelão:</strong> 10 caixas, petiscos em algumas</li>
-                <li><strong>Gelo com Petiscos:</strong> Congelar petiscos em água</li>
-            </ul>
-            
-            <h3>Rotina Sugerida</h3>
-            <p>Manhã: Exercício físico → Puzzle feeder no café<br>
-            Tarde: Nosework 10 min<br>
-            Noite: Treino de truques 10 min</p>
-        `,
-	},
-	{
-		id: "clicker-training",
-		title: "Clicker Training para Iniciantes",
-		description: "Comunicação precisa e aceleração de aprendizado",
-		icon: "🔔",
-		duration: "1+ semana",
-		difficulty: "medium",
-		content: `
-            <h3>O Que É Clicker Training</h3>
-            <p>Um marcador temporal preciso (som de clicker) que identifica o exato momento do comportamento correto.</p>
-            
-            <h3>Fase 1: Carregar o Clicker (Dias 1-3)</h3>
-            <ol>
-                <li>Click → petisco imediato</li>
-                <li>Repetir 50-100 vezes</li>
-                <li>Teste: Click sem avisar. Cão deve virar expectante</li>
-            </ol>
-            
-            <h3>Fase 2: Capturar Comportamentos</h3>
-            <p>Quando o cão faz algo desejado (ex: senta naturalmente) → Click → Petisco</p>
-            
-            <h3>Fase 3: Adicionar Comando</h3>
-            <p>Quando comportamento é consistente, adicione palavra antes dele acontecer</p>
-            
-            <h3>Apps de Clicker Gratuitos</h3>
-            <ul>
-                <li>Dog Clicker Training (iOS/Android)</li>
-                <li>Alternativa: Tampa de garrafa</li>
-            </ul>
-        `,
-	},
-	{
-		id: "leash-walking",
-		title: "Caminhada com Guia Frouxa",
-		description: "Eliminar puxões e transformar passeios",
-		icon: "🦮",
-		duration: "16+ semanas",
-		difficulty: "hard",
-		content: `
-            <h3>Por que É Desafiador</h3>
-            <p>Blue Heelers têm alta energia e impulso de exploração. Puxar é natural; andar junto não é.</p>
-            
-            <h3>Método de Parar e Esperar</h3>
-            <ol>
-                <li>Cão puxa → Você PARA imediatamente</li>
-                <li>Espera (sem falar nada)</li>
-                <li>Quando guia afrouxar → "Sim!" + seguir</li>
-                <li>Petisco a cada 3-5 passos sem puxar</li>
-            </ol>
-            
-            <h3>Progressão Gradual</h3>
-            <ul>
-                <li>Semana 1-2: Dentro de casa (5 min)</li>
-                <li>Semana 3-4: Quintal (10 min)</li>
-                <li>Semana 5-6: Calçada calma (15 min)</li>
-                <li>Semana 7+: Rua com distrações</li>
-            </ul>
-            
-            <h3>Equipamento</h3>
-            <p>Use harness frontal (impede puxão) + guia de 4-6 pés</p>
-        `,
-	},
+const milestones = [
+  { week: 8, items: ["Responde ao nome", "Tolera handling básico", "50% acerto potty"] },
+  { week: 12, items: ["Sit confiável", "80%+ acerto potty", "Confortável com 50+ pessoas"] },
+  { week: 16, items: ["Sit/Down/Stay básico", "Leash walking iniciado", "100+ pessoas"] },
+  { week: 24, items: ["Comandos básicos sólidos", "Recall confiável", "Bem socializado"] }
 ];
 
-// === BADGES/CONQUISTAS ===
-const BADGES = [
-	{
-		id: "primeira-semana",
-		name: "Primeira Semana",
-		description: "7 dias consecutivos de treinamento",
-		icon: "🎉",
-		requirement: () => appState.streak >= 7,
-	},
-	{
-		id: "social-butterfly-50",
-		name: "Social Butterfly",
-		description: "50 pessoas diferentes conhecidas",
-		icon: "🦋",
-		requirement: () => false, // Implemente contador
-	},
-	{
-		id: "mestresessoes-30",
-		name: "Mestre das Sessões",
-		description: "30 sessões completas",
-		icon: "🎓",
-		requirement: () => appState.totalSessions >= 30,
-	},
-	{
-		id: "streak-30",
-		name: "Consistência de Ouro",
-		description: "30 dias consecutivos",
-		icon: "👑",
-		requirement: () => appState.streak >= 30,
-	},
-	{
-		id: "early-bird",
-		name: "Madrugador",
-		description: "Treino antes das 7h",
-		icon: "🌅",
-		requirement: () => false, // Implemente verificação de horário
-	},
-	{
-		id: "completionista",
-		name: "Completionista",
-		description: "100% de conclusão por 7 dias",
-		icon: "💯",
-		requirement: () => false, // Implemente verificação
-	},
-	{
-		id: "periodo-critico",
-		name: "Período Crítico Dominado",
-		description: "Completou todas socializações de 8-16 semanas",
-		icon: "⭐",
-		requirement: () => false,
-	},
-	{
-		id: "bite-master",
-		name: "Bite Inhibition Master",
-		description: "Controle completo de mordida",
-		icon: "🦷",
-		requirement: () => false,
-	},
-	{
-		id: "recall-pro",
-		name: "Recall Profissional",
-		description: "Recall 100% confiável",
-		icon: "📣",
-		requirement: () => false,
-	},
-	{
-		id: "biblioteca-completa",
-		name: "Estudioso",
-		description: "Leu todos os guias da biblioteca",
-		icon: "📚",
-		requirement: () => false,
-	},
-	{
-		id: "heeler-expert",
-		name: "Blue Heeler Expert",
-		description: "Completou todos os marcos de treinamento",
-		icon: "🏆",
-		requirement: () => false,
-	},
-	{
-		id: "partnership",
-		name: "Parceria Perfeita",
-		description: "100 sessões completas",
-		icon: "💙",
-		requirement: () => appState.totalSessions >= 100,
-	},
+const weeklyChecklist = [
+  { item: "Socialização: 5+ pessoas novas", meta: 5, current: 0 },
+  { item: "Socialização: 2+ cães novos", meta: 2, current: 0 },
+  { item: "Ambientes: 3+ lugares novos", meta: 3, current: 0 },
+  { item: "Sessões de treino: 21 (3/dia x 7)", meta: 21, current: 0 },
+  { item: "Handling: 7 sessões", meta: 7, current: 0 },
+  { item: "Sons novos: 10 diferentes", meta: 10, current: 0 }
 ];
 
-// === INICIALIZAÇÃO ===
-document.addEventListener("DOMContentLoaded", () => {
-	loadFromLocalStorage();
-	renderUI();
-	startAutoSync();
-	updatePuppyAge();
-
-	// Atualizar idade do filhote a cada hora
-	setInterval(updatePuppyAge, 3600000);
-});
-
-// === FUNÇÕES DE UI ===
-function renderUI() {
-	renderDashboard();
-	renderTodayTraining();
-	renderProgress();
-	renderLibrary();
-	renderBadges();
+function init() {
+  updateDashboard();
+  renderDailyPlan();
+  renderLibrary();
+  renderProgress();
+  renderProfile();
+  showRandomTip();
+  
+  if (!appData.dog.name || appData.dog.name === "Meu Blue Heeler") {
+    setTimeout(() => showSetupModal(), 1000);
+  }
 }
 
-function renderDashboard() {
-	const today = getTodayKey();
-	const todayData = appState.dailyTraining[today] || {};
-	const completed = Object.keys(todayData).filter((k) => todayData[k]).length;
-	const total = TRAINING_EXERCISES.length;
-	const percentage = Math.round((completed / total) * 100);
-
-	document.getElementById("progressValue").textContent = `${percentage}%`;
-	document.getElementById("miniProgress").style.width = `${percentage}%`;
-	document.getElementById("streakValue").textContent = appState.streak;
-	document.getElementById(
-		"badgesValue"
-	).textContent = `${appState.badges.length}/${BADGES.length}`;
-	document.getElementById("totalSessions").textContent = appState.totalSessions;
+function showRandomTip() {
+  const randomTip = tips[Math.floor(Math.random() * tips.length)];
+  document.getElementById('dailyTip').textContent = randomTip;
 }
 
-function renderTodayTraining() {
-	const today = getTodayKey();
-	const todayData = appState.dailyTraining[today] || {};
-	const list = document.getElementById("trainingList");
-	list.innerHTML = "";
-
-	TRAINING_EXERCISES.forEach((exercise) => {
-		const isCompleted = todayData[exercise.id] || false;
-		const item = document.createElement("div");
-		item.className = `training-item ${isCompleted ? "completed" : ""}`;
-		item.onclick = () => toggleTraining(exercise.id);
-
-		item.innerHTML = `
-            <div class="training-checkbox">
-                ${
-									isCompleted
-										? '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>'
-										: ""
-								}
-            </div>
-            <div class="training-info">
-                <div class="training-name">${exercise.name}</div>
-                <div class="training-meta">
-                    <span>⏱️ ${exercise.duration}</span>
-                    <span>📁 ${exercise.category}</span>
-                </div>
-                <div class="training-tags">
-                    <span class="tag">${exercise.difficulty}</span>
-                    <span class="tag">Fase ${exercise.phase}</span>
-                </div>
-            </div>
-        `;
-
-		list.appendChild(item);
-	});
+function updateDashboard() {
+  document.getElementById('totalSessions').textContent = appData.stats.totalSessions;
+  document.getElementById('currentStreak').textContent = appData.stats.currentStreak;
+  document.getElementById('overallProgress').textContent = appData.stats.overallProgress + '%';
+  
+  const birthDate = new Date(appData.dog.birthDate);
+  const today = new Date();
+  const diffTime = Math.abs(today - birthDate);
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  const weeks = Math.floor(diffDays / 7);
+  const days = diffDays % 7;
+  
+  let ageText;
+  if (weeks === 0) {
+    ageText = `${diffDays} dias`;
+  } else {
+    ageText = `${weeks} semana${weeks > 1 ? 's' : ''}${days > 0 ? ` e ${days} dias` : ''}`;
+  }
+  
+  document.getElementById('dogAge').textContent = `${ageText} • Socialização Crítica`;
+  document.getElementById('dogName').textContent = appData.dog.name;
 }
 
-function renderProgress() {
-	const today = getTodayKey();
-	const todayData = appState.dailyTraining[today] || {};
-	const completed = Object.keys(todayData).filter((k) => todayData[k]).length;
-	const total = TRAINING_EXERCISES.length;
-	const percentage = Math.round((completed / total) * 100);
-
-	document.getElementById("weeklyProgress").style.width = `${percentage}%`;
-	document.getElementById("weeklyProgressText").textContent = `${percentage}%`;
-	document.getElementById("completedCount").textContent = completed;
-	document.getElementById("totalTime").textContent = `${Math.round(
-		(completed * 8) / 60
-	)}h`;
-
-	// Cálculo de melhoria (placeholder - implemente comparação com semana anterior)
-	document.getElementById("improvement").textContent = "+15%";
-
-	renderActivityCalendar();
+function renderDailyPlan() {
+  renderTimeSection('morningExercises', dailyPlan.morning, 'morning');
+  renderTimeSection('afternoonExercises', dailyPlan.afternoon, 'afternoon');
+  renderTimeSection('eveningExercises', dailyPlan.evening, 'evening');
 }
 
-function renderActivityCalendar() {
-	const calendar = document.getElementById("activityCalendar");
-	if (!calendar) return;
+function renderTimeSection(containerId, exercisesList, timeId) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  
+  exercisesList.forEach((ex, index) => {
+    const exerciseId = `${timeId}-${index}`;
+    const isCompleted = appData.stats.completedExercises[exerciseId] || false;
+    
+    const exerciseDiv = document.createElement('div');
+    exerciseDiv.className = `exercise-item ${isCompleted ? 'completed' : ''}`;
+    exerciseDiv.onclick = () => showExerciseDetail(ex, exerciseId);
+    
+    exerciseDiv.innerHTML = `
+      <div class="exercise-checkbox ${isCompleted ? 'checked' : ''}" onclick="event.stopPropagation(); toggleExercise('${exerciseId}')">>
+        ${isCompleted ? '✓' : ''}
+      </div>
+      <div class="exercise-info">
+        <div class="exercise-title">${getExerciseTitle(ex.exercise) || ex.description || ex.exercise}</div>
+        <div class="exercise-duration">${ex.duration} min${ex.time ? ' • ' + ex.time : ''}</div>
+      </div>
+    `;
+    
+    container.appendChild(exerciseDiv);
+  });
+}
 
-	calendar.innerHTML = "<p>Calendário de atividades será implementado aqui</p>";
-	// TODO: Implementar visualização de calendário com histórico
+function getExerciseTitle(exerciseKey) {
+  for (const category in exercises) {
+    const exercise = exercises[category].exercises?.find(ex => ex.id === exerciseKey);
+    if (exercise) return exercise.title;
+  }
+  
+  const fallbackTitles = {
+    'potty-training': 'Potty Training',
+    'nome-atencao': 'Nome e Atenção',
+    'exploracao-supervisionada': 'Exploração Supervisionada',
+    'socializacao-pessoas': 'Socialização com Pessoas',
+    'habituacao-sons': 'Habituação a Sons',
+    'brincadeira-livre': 'Brincadeira Livre',
+    'bite-inhibition': 'Bite Inhibition',
+    'handling': 'Handling'
+  };
+  
+  return fallbackTitles[exerciseKey] || exerciseKey;
+}
+
+function toggleExercise(exerciseId) {
+  const isCompleted = appData.stats.completedExercises[exerciseId] || false;
+  appData.stats.completedExercises[exerciseId] = !isCompleted;
+  
+  if (!isCompleted) {
+    appData.stats.totalSessions++;
+    showSuccessAnimation();
+    checkBadges();
+  } else {
+    appData.stats.totalSessions = Math.max(0, appData.stats.totalSessions - 1);
+  }
+  
+  updateDashboard();
+  renderDailyPlan();
+  updateProgress();
+}
+
+function showSuccessAnimation() {
+  const message = document.createElement('div');
+  message.textContent = ['Excelente!', 'Ótimo trabalho!', 'Continue assim!', 'Parabéns!'][Math.floor(Math.random() * 4)];
+  message.style.cssText = `
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--color-success);
+    color: var(--color-btn-primary-text);
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    z-index: 9999;
+    animation: bounce 0.6s ease-in-out;
+    box-shadow: var(--shadow-lg);
+  `;
+  
+  document.body.appendChild(message);
+  setTimeout(() => message.remove(), 1000);
+}
+
+function checkBadges() {
+  if (appData.stats.currentStreak >= 7 && !badges.find(b => b.id === 'first-week').unlocked) {
+    unlockBadge('first-week');
+  }
+  
+  if (appData.stats.currentStreak >= 30 && !badges.find(b => b.id === 'golden-consistency').unlocked) {
+    unlockBadge('golden-consistency');
+  }
+}
+
+function unlockBadge(badgeId) {
+  const badge = badges.find(b => b.id === badgeId);
+  if (badge) {
+    badge.unlocked = true;
+    showBadgeUnlock(badge);
+  }
+}
+
+function showBadgeUnlock(badge) {
+  const message = document.createElement('div');
+  message.innerHTML = `
+    <div style="font-size: 40px; margin-bottom: 8px;">${badge.icon}</div>
+    <div style="font-weight: 600; margin-bottom: 4px;">Conquista Desbloqueada!</div>
+    <div>${badge.name}</div>
+  `;
+  message.style.cssText = `
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--color-surface);
+    border: 2px solid var(--color-primary);
+    color: var(--color-text);
+    padding: 24px;
+    border-radius: 16px;
+    text-align: center;
+    z-index: 9999;
+    animation: bounce 0.8s ease-in-out;
+    box-shadow: var(--shadow-lg);
+  `;
+  
+  document.body.appendChild(message);
+  setTimeout(() => message.remove(), 3000);
+}
+
+function showExerciseDetail(exercise, exerciseId) {
+  appData.currentExercise = { ...exercise, id: exerciseId };
+  
+  let fullExercise = null;
+  for (const category in exercises) {
+    fullExercise = exercises[category].exercises?.find(ex => ex.id === exercise.exercise);
+    if (fullExercise) break;
+  }
+  
+  const title = fullExercise?.title || getExerciseTitle(exercise.exercise) || exercise.description;
+  document.getElementById('modalTitle').textContent = title;
+  
+  let content = `<div class="exercise-duration-badge">${exercise.duration} min</div>`;
+  
+  if (fullExercise) {
+    content += `<div class="exercise-description">${fullExercise.description}</div>`;
+    
+    if (fullExercise.method) {
+      content += `<div class="mb-16"><div class="meta-label">Como fazer:</div>${fullExercise.method}</div>`;
+    }
+    
+    if (fullExercise.progression) {
+      content += `<div class="mb-16"><div class="meta-label">Progressão:</div>${fullExercise.progression}</div>`;
+    }
+    
+    if (fullExercise.goal) {
+      content += `<div class="mb-16"><div class="meta-label">Meta:</div>${fullExercise.goal}</div>`;
+    }
+    
+    if (fullExercise.tips) {
+      content += `<div class="mb-16"><div class="meta-label">Dicas:</div>${fullExercise.tips}</div>`;
+    }
+    
+    if (fullExercise.important) {
+      content += `<div class="mb-16 text-error"><div class="meta-label">Importante:</div>${fullExercise.important}</div>`;
+    }
+  } else {
+    content += `<div class="exercise-description">${exercise.description || 'Exercício fundamental para o desenvolvimento do seu Blue Heeler.'}</div>`;
+  }
+  
+  document.getElementById('modalContent').innerHTML = content;
+  document.getElementById('exerciseModal').classList.add('active');
+}
+
+function markExerciseComplete() {
+  if (appData.currentExercise) {
+    toggleExercise(appData.currentExercise.id);
+    closeModal('exerciseModal');
+  }
 }
 
 function renderLibrary() {
-	const grid = document.getElementById("libraryGrid");
-	if (!grid) return;
-
-	grid.innerHTML = "";
-
-	LIBRARY_CONTENT.forEach((item) => {
-		const card = document.createElement("div");
-		card.className = "library-card";
-		card.onclick = () => openLibraryItem(item);
-
-		card.innerHTML = `
-            <div class="library-image">${item.icon}</div>
-            <div class="library-content">
-                <h3 class="library-title">${item.title}</h3>
-                <p class="library-description">${item.description}</p>
-                <div class="library-footer">
-                    <span class="library-duration">
-                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        ${item.duration}
-                    </span>
-                    <span class="library-difficulty ${item.difficulty}">${item.difficulty}</span>
-                </div>
-            </div>
+  const container = document.getElementById('libraryContent');
+  container.innerHTML = '';
+  
+  for (const categoryKey in exercises) {
+    const category = exercises[categoryKey];
+    
+    const headerDiv = document.createElement('div');
+    headerDiv.className = 'category-header';
+    headerDiv.innerHTML = `
+      <div class="category-title">${category.title}</div>
+      <div class="category-desc">${category.description}</div>
+    `;
+    container.appendChild(headerDiv);
+    
+    if (category.exercises) {
+      category.exercises.forEach(exercise => {
+        const exerciseDiv = document.createElement('div');
+        exerciseDiv.className = 'exercise-card';
+        exerciseDiv.onclick = () => showLibraryExercise(exercise);
+        
+        exerciseDiv.innerHTML = `
+          <div class="exercise-card-header">
+            <div class="exercise-card-title">${exercise.title}</div>
+            <div class="exercise-duration-badge">${exercise.duration || 10} min</div>
+          </div>
+          <div class="exercise-description">${exercise.description}</div>
+          <div class="exercise-meta">
+            ${exercise.goal ? `<div class="meta-item"><span class="meta-label">Meta:</span> ${exercise.goal.substring(0, 50)}...</div>` : ''}
+          </div>
         `;
+        
+        container.appendChild(exerciseDiv);
+      });
+    }
+  }
+}
 
-		grid.appendChild(card);
-	});
+function showLibraryExercise(exercise) {
+  appData.currentExercise = { ...exercise, id: 'library-' + exercise.id };
+  
+  document.getElementById('modalTitle').textContent = exercise.title;
+  
+  let content = `<div class="exercise-duration-badge">${exercise.duration || 10} min</div>`;
+  content += `<div class="exercise-description">${exercise.description}</div>`;
+  
+  if (exercise.method) {
+    content += `<div class="mb-16"><div class="meta-label">Como fazer:</div>${exercise.method}</div>`;
+  }
+  
+  if (exercise.progression) {
+    content += `<div class="mb-16"><div class="meta-label">Progressão:</div>${exercise.progression}</div>`;
+  }
+  
+  if (exercise.goal) {
+    content += `<div class="mb-16"><div class="meta-label">Meta:</div>${exercise.goal}</div>`;
+  }
+  
+  if (exercise.tips) {
+    content += `<div class="mb-16"><div class="meta-label">Dicas:</div>${exercise.tips}</div>`;
+  }
+  
+  if (exercise.important) {
+    content += `<div class="mb-16 text-error"><div class="meta-label">Importante:</div>${exercise.important}</div>`;
+  }
+  
+  if (exercise.frequency) {
+    content += `<div class="mb-16"><div class="meta-label">Frequência:</div>${exercise.frequency}</div>`;
+  }
+  
+  if (exercise.sessions) {
+    content += `<div class="mb-16"><div class="meta-label">Sessões:</div>${exercise.sessions}</div>`;
+  }
+  
+  document.getElementById('modalContent').innerHTML = content;
+  document.getElementById('exerciseModal').classList.add('active');
+}
+
+function renderProgress() {
+  renderBadges();
+  renderCalendar();
+  renderMilestones();
+  renderWeeklyChecklist();
 }
 
 function renderBadges() {
-	const grid = document.getElementById("badgesGrid");
-	if (!grid) return;
-
-	grid.innerHTML = "";
-
-	BADGES.forEach((badge) => {
-		const isEarned = badge.requirement();
-		const card = document.createElement("div");
-		card.className = `badge-card ${isEarned ? "earned" : ""}`;
-
-		card.innerHTML = `
-            <div class="badge-icon">${badge.icon}</div>
-            <h4 class="badge-name">${badge.name}</h4>
-            <p class="badge-description">${badge.description}</p>
-        `;
-
-		grid.appendChild(card);
-	});
-}
-
-// === AÇÕES DO USUÁRIO ===
-function toggleTraining(exerciseId) {
-	const today = getTodayKey();
-	if (!appState.dailyTraining[today]) {
-		appState.dailyTraining[today] = {};
-	}
-
-	appState.dailyTraining[today][exerciseId] =
-		!appState.dailyTraining[today][exerciseId];
-
-	// Incrementar sessões totais se completou
-	if (appState.dailyTraining[today][exerciseId]) {
-		appState.totalSessions++;
-	} else {
-		appState.totalSessions--;
-	}
-
-	calculateStreak();
-	saveToLocalStorage();
-	renderUI();
-
-	if (CONFIG.AUTO_SAVE) {
-		syncToServer();
-	}
-}
-
-function switchTab(tabName) {
-	// Remover active de todas as tabs
-	document
-		.querySelectorAll(".tab")
-		.forEach((tab) => tab.classList.remove("active"));
-	document
-		.querySelectorAll(".tab-content")
-		.forEach((content) => content.classList.remove("active"));
-
-	// Adicionar active na tab clicada
-	document.querySelector(`[data-tab="${tabName}"]`).classList.add("active");
-	document.getElementById(`tab-${tabName}`).classList.add("active");
-}
-
-function openSettings() {
-	const modal = document.getElementById("settingsModal");
-	modal.classList.add("active");
-
-	// Preencher dados atuais
-	document.getElementById("dogName").value = appState.dogData.name;
-	document.getElementById("dogBirthDate").value = appState.dogData.birthDate;
-
-	appState.dogData.goals.forEach((goal) => {
-		const checkbox = document.getElementById(`goal-${goal}`);
-		if (checkbox) checkbox.checked = true;
-	});
-}
-
-function closeSettings() {
-	document.getElementById("settingsModal").classList.remove("active");
-}
-
-function saveSettings() {
-	appState.dogData.name = document.getElementById("dogName").value;
-	appState.dogData.birthDate = document.getElementById("dogBirthDate").value;
-
-	appState.dogData.goals = [];
-	["obedience", "herding", "tricks", "socialization"].forEach((goal) => {
-		const checkbox = document.getElementById(`goal-${goal}`);
-		if (checkbox && checkbox.checked) {
-			appState.dogData.goals.push(goal);
-		}
-	});
-
-	saveToLocalStorage();
-	syncToServer();
-	renderUI();
-	updatePuppyAge();
-	closeSettings();
-
-	showNotification("Configurações salvas com sucesso!", "success");
-}
-
-function toggleDarkMode() {
-	document.body.classList.toggle("dark-mode");
-	const isDark = document.body.classList.contains("dark-mode");
-	localStorage.setItem("darkMode", isDark);
-}
-
-function exportData() {
-	const dataStr = JSON.stringify(appState, null, 2);
-	const dataBlob = new Blob([dataStr], { type: "application/json" });
-	const url = URL.createObjectURL(dataBlob);
-	const link = document.createElement("a");
-	link.href = url;
-	link.download = `blue-heeler-progresso-${getTodayKey()}.json`;
-	link.click();
-
-	showNotification("Dados exportados com sucesso!", "success");
-}
-
-function addQuickNote() {
-	const note = prompt("Adicionar nota sobre o treino de hoje:");
-	if (note) {
-		const today = getTodayKey();
-		if (!appState.dailyTraining[today]) {
-			appState.dailyTraining[today] = {};
-		}
-		appState.dailyTraining[today]._note = note;
-		saveToLocalStorage();
-		showNotification("Nota adicionada!", "success");
-	}
-}
-
-function openLibraryItem(item) {
-	// TODO: Implementar modal com conteúdo completo
-	alert(
-		`${item.title}\n\n${item.description}\n\nConteúdo completo será exibido em um modal.`
-	);
-}
-
-// === UTILIDADES ===
-function getTodayKey() {
-	return new Date().toISOString().split("T")[0];
-}
-
-function calculateStreak() {
-	const dates = Object.keys(appState.dailyTraining).sort().reverse();
-	let streak = 0;
-	const today = new Date();
-
-	for (let i = 0; i < dates.length; i++) {
-		const date = new Date(dates[i]);
-		const expected = new Date(today);
-		expected.setDate(expected.getDate() - i);
-
-		if (
-			date.toISOString().split("T")[0] === expected.toISOString().split("T")[0]
-		) {
-			const dayData = appState.dailyTraining[dates[i]];
-			const hasCompletedAny = Object.keys(dayData).some(
-				(k) => k !== "_note" && dayData[k]
-			);
-			if (hasCompletedAny) {
-				streak++;
-			} else {
-				break;
-			}
-		} else {
-			break;
-		}
-	}
-
-	appState.streak = streak;
-}
-
-function updatePuppyAge() {
-	const birthDate = new Date(appState.dogData.birthDate);
-	const today = new Date();
-	const diffTime = Math.abs(today - birthDate);
-	const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-	const weeks = Math.floor(diffDays / 7);
-
-	const nameEl = document.getElementById("puppyName");
-	const ageEl = document.getElementById("puppyAge");
-	const daysEl = document.getElementById("daysOld");
-
-	if (nameEl) nameEl.textContent = appState.dogData.name;
-	if (ageEl)
-		ageEl.textContent = `${weeks} semanas • Período Crítico de Socialização`;
-	if (daysEl) daysEl.textContent = `${diffDays} dias`;
-}
-
-function showNotification(message, type = "success") {
-	const notification = document.createElement("div");
-	notification.className = `notification ${type}`;
-	notification.textContent = message;
-	notification.style.cssText = `
-        position: fixed;
-        top: 90px;
-        right: 20px;
-        padding: 16px 24px;
-        background: ${type === "success" ? "var(--success)" : "var(--danger)"};
-        color: white;
-        border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-xl);
-        z-index: var(--z-toast);
-        animation: slideIn 0.3s ease;
+  const container = document.getElementById('badgesContainer');
+  container.innerHTML = '';
+  
+  badges.forEach(badge => {
+    const badgeDiv = document.createElement('div');
+    badgeDiv.className = `badge ${badge.unlocked ? '' : 'locked'}`;
+    badgeDiv.innerHTML = `
+      <span>${badge.icon}</span>
+      <span>${badge.name}</span>
     `;
-
-	document.body.appendChild(notification);
-
-	setTimeout(() => {
-		notification.style.animation = "slideOut 0.3s ease";
-		setTimeout(() => notification.remove(), 300);
-	}, 3000);
+    container.appendChild(badgeDiv);
+  });
 }
 
-// === PERSISTÊNCIA LOCAL ===
-function saveToLocalStorage() {
-	try {
-		localStorage.setItem("blue_heeler_data", JSON.stringify(appState));
-		console.log("✅ Dados salvos localmente");
-	} catch (error) {
-		console.error("❌ Erro ao salvar localmente:", error);
-	}
+function renderCalendar() {
+  const container = document.getElementById('trainingCalendar');
+  container.innerHTML = '';
+  
+  const today = new Date();
+  for (let i = 29; i >= 0; i--) {
+    const date = new Date(today);
+    date.setDate(date.getDate() - i);
+    
+    const dayDiv = document.createElement('div');
+    dayDiv.className = 'calendar-day';
+    if (i === 0) dayDiv.classList.add('today');
+    
+    const hasTraining = Math.random() < 0.6;
+    if (hasTraining && i > 0) {
+      dayDiv.classList.add('completed');
+    }
+    
+    dayDiv.textContent = date.getDate();
+    container.appendChild(dayDiv);
+  }
 }
 
-function loadFromLocalStorage() {
-	try {
-		const stored = localStorage.getItem("blue_heeler_data");
-		if (stored) {
-			appState = { ...appState, ...JSON.parse(stored) };
-			console.log("✅ Dados carregados localmente");
-		}
-
-		// Dark mode
-		const darkMode = localStorage.getItem("darkMode") === "true";
-		if (darkMode) {
-			document.body.classList.add("dark-mode");
-		}
-	} catch (error) {
-		console.error("❌ Erro ao carregar dados:", error);
-	}
+function renderMilestones() {
+  const container = document.getElementById('milestonesContainer');
+  container.innerHTML = '';
+  
+  milestones.forEach(milestone => {
+    const milestoneDiv = document.createElement('div');
+    milestoneDiv.className = 'exercise-card';
+    
+    const currentWeek = 7;
+    const isReached = currentWeek >= milestone.week;
+    
+    milestoneDiv.innerHTML = `
+      <div class="exercise-card-header">
+        <div class="exercise-card-title">Semana ${milestone.week}</div>
+        <div class="badge ${isReached ? '' : 'locked'}">
+          ${isReached ? '✅' : '🔒'}
+        </div>
+      </div>
+      <ul style="margin: 0; padding-left: 20px;">
+        ${milestone.items.map(item => `<li>${item}</li>`).join('')}
+      </ul>
+    `;
+    
+    container.appendChild(milestoneDiv);
+  });
 }
 
-// === SINCRONIZAÇÃO COM AZURE ===
-async function syncToServer() {
-	setSyncStatus("Sincronizando...", true);
-
-	try {
-		const response = await fetch(`${CONFIG.API_BASE_URL}/sync-data`, {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({
-				deviceId: getDeviceId(),
-				timestamp: new Date().toISOString(),
-				data: appState,
-			}),
-		});
-
-		if (response.ok) {
-			appState.lastSync = new Date().toISOString();
-			saveToLocalStorage();
-			setSyncStatus("Sincronizado", false);
-			console.log("✅ Sincronizado com servidor");
-		} else {
-			throw new Error("Erro na sincronização");
-		}
-	} catch (error) {
-		console.error("❌ Erro ao sincronizar:", error);
-		setSyncStatus("Modo Offline", false);
-	}
+function renderWeeklyChecklist() {
+  const container = document.getElementById('weeklyChecklist');
+  container.innerHTML = '';
+  
+  weeklyChecklist.forEach(item => {
+    const progress = Math.floor((item.current / item.meta) * 100);
+    
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'exercise-card';
+    itemDiv.innerHTML = `
+      <div class="exercise-card-header">
+        <div class="exercise-card-title">${item.item}</div>
+        <div class="exercise-duration-badge">${item.current}/${item.meta}</div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: ${progress}%"></div>
+      </div>
+    `;
+    
+    container.appendChild(itemDiv);
+  });
 }
 
-async function loadFromServer() {
-	setSyncStatus("Carregando...", true);
-
-	try {
-		const response = await fetch(`${CONFIG.API_BASE_URL}/load-data`, {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ deviceId: getDeviceId() }),
-		});
-
-		if (response.ok) {
-			const result = await response.json();
-			if (result.data) {
-				appState = { ...appState, ...result.data };
-				saveToLocalStorage();
-				renderUI();
-			}
-			setSyncStatus("Sincronizado", false);
-			console.log("✅ Dados carregados do servidor");
-		}
-	} catch (error) {
-		console.error("❌ Erro ao carregar:", error);
-		setSyncStatus("Modo Offline", false);
-	}
+function updateProgress() {
+  const totalExercises = Object.keys(dailyPlan.morning).length + 
+                       Object.keys(dailyPlan.afternoon).length + 
+                       Object.keys(dailyPlan.evening).length;
+  const completedToday = Object.keys(appData.stats.completedExercises).length;
+  appData.stats.overallProgress = Math.min(100, Math.floor((completedToday / (totalExercises * 7)) * 100));
 }
 
-function startAutoSync() {
-	// Carregar dados do servidor ao iniciar
-	loadFromServer();
-
-	// Sincronizar periodicamente
-	setInterval(() => {
-		if (CONFIG.AUTO_SAVE) {
-			syncToServer();
-		}
-	}, CONFIG.SYNC_INTERVAL);
+function renderProfile() {
+  document.getElementById('profileName').textContent = appData.dog.name;
+  document.getElementById('profileAge').textContent = document.getElementById('dogAge').textContent.split(' •')[0];
+  
+  const totalDays = appData.stats.trainingDays.length || 0;
+  const totalExercises = appData.stats.totalSessions || 0;
+  const consistency = totalDays > 0 ? Math.floor((totalExercises / (totalDays * 3)) * 100) : 0;
+  
+  document.getElementById('profileTotalDays').textContent = totalDays;
+  document.getElementById('profileTotalExercises').textContent = totalExercises;
+  document.getElementById('profileConsistency').textContent = consistency + '%';
 }
 
-function setSyncStatus(text, syncing = false) {
-	const statusEl = document.getElementById("syncStatus");
-	if (statusEl) {
-		statusEl.querySelector("span").textContent = text;
-		const indicator = statusEl.querySelector(".sync-indicator");
-		if (syncing) {
-			indicator.classList.add("syncing");
-		} else {
-			indicator.classList.remove("syncing");
-		}
-	}
+function startTimer() {
+  showModal('timerModal');
+  resetTimer();
 }
 
-function getDeviceId() {
-	let deviceId = localStorage.getItem("device_id");
-	if (!deviceId) {
-		deviceId = "device_" + Math.random().toString(36).substr(2, 9) + Date.now();
-		localStorage.setItem("device_id", deviceId);
-	}
-	return deviceId;
+function toggleTimer() {
+  if (appData.timer.running) {
+    pauseTimer();
+  } else {
+    resumeTimer();
+  }
 }
 
-// === EXPORTS ===
-window.toggleTraining = toggleTraining;
-window.switchTab = switchTab;
-window.openSettings = openSettings;
-window.closeSettings = closeSettings;
-window.saveSettings = saveSettings;
-window.toggleDarkMode = toggleDarkMode;
-window.exportData = exportData;
-window.addQuickNote = addQuickNote;
+function resumeTimer() {
+  appData.timer.running = true;
+  document.getElementById('timerBtn').innerHTML = '⏸️ Pausar';
+  
+  appData.timer.interval = setInterval(() => {
+    if (appData.timer.seconds > 0) {
+      appData.timer.seconds--;
+    } else if (appData.timer.minutes > 0) {
+      appData.timer.minutes--;
+      appData.timer.seconds = 59;
+    } else {
+      pauseTimer();
+      playFinishSound();
+      alert('Tempo esgotado! 🎉');
+      return;
+    }
+    updateTimerDisplay();
+  }, 1000);
+}
+
+function pauseTimer() {
+  appData.timer.running = false;
+  document.getElementById('timerBtn').innerHTML = '▶️ Continuar';
+  if (appData.timer.interval) {
+    clearInterval(appData.timer.interval);
+  }
+}
+
+function resetTimer() {
+  pauseTimer();
+  appData.timer.minutes = 5;
+  appData.timer.seconds = 0;
+  document.getElementById('timerBtn').innerHTML = '▶️ Iniciar';
+  updateTimerDisplay();
+}
+
+function updateTimerDisplay() {
+  const display = `${appData.timer.minutes.toString().padStart(2, '0')}:${appData.timer.seconds.toString().padStart(2, '0')}`;
+  document.getElementById('timerDisplay').textContent = display;
+}
+
+function playFinishSound() {
+  if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
+    const AudioCtx = AudioContext || webkitAudioContext;
+    const audioCtx = new AudioCtx();
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    
+    oscillator.frequency.value = 800;
+    gainNode.gain.value = 0.3;
+    
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime + 0.5);
+  }
+}
+
+function showClicker() {
+  showModal('clickerModal');
+}
+
+function playClick() {
+  if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
+    const AudioCtx = AudioContext || webkitAudioContext;
+    const audioCtx = new AudioCtx();
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    
+    oscillator.frequency.value = 2000;
+    oscillator.type = 'square';
+    gainNode.gain.value = 0.1;
+    
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime + 0.05);
+  }
+  
+  const btn = document.querySelector('.clicker-btn');
+  btn.style.transform = 'scale(0.95)';
+  setTimeout(() => {
+    btn.style.transform = 'scale(1)';
+  }, 100);
+}
+
+function showCounter() {
+  showModal('counterModal');
+}
+
+function incrementCounter() {
+  appData.repCounter++;
+  document.getElementById('repCount').textContent = appData.repCounter;
+}
+
+function resetCounter() {
+  appData.repCounter = 0;
+  document.getElementById('repCount').textContent = appData.repCounter;
+}
+
+function showSetupModal() {
+  document.getElementById('dogNameInput').value = appData.dog.name;
+  document.getElementById('birthDate').value = appData.dog.birthDate;
+  document.getElementById('experience').value = appData.dog.experience;
+  
+  appData.dog.objectives.forEach(obj => {
+    const checkbox = document.querySelector(`input[value="${obj}"]`);
+    if (checkbox) checkbox.checked = true;
+  });
+  
+  showModal('setupModal');
+}
+
+function handleSetupForm(event) {
+  event.preventDefault();
+  
+  appData.dog.name = document.getElementById('dogNameInput').value;
+  appData.dog.birthDate = document.getElementById('birthDate').value;
+  appData.dog.experience = document.getElementById('experience').value;
+  
+  const objectiveCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+  appData.dog.objectives = Array.from(objectiveCheckboxes).map(cb => cb.value);
+  
+  updateDashboard();
+  renderProfile();
+  closeModal('setupModal');
+  
+  setTimeout(() => {
+    alert('Configuração salva! Seu plano personalizado foi gerado. 🎉');
+  }, 500);
+}
+
+function showModal(modalId) {
+  document.getElementById(modalId).classList.add('active');
+}
+
+function closeModal(modalId) {
+  document.getElementById(modalId).classList.remove('active');
+}
+
+function showScreen(screenId) {
+  document.querySelectorAll('.screen').forEach(screen => {
+    screen.classList.remove('active');
+  });
+  
+  document.getElementById(screenId).classList.add('active');
+  
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.classList.remove('active');
+  });
+  
+  const navItem = document.querySelector(`.nav-item[onclick*="'${screenId}'"]`);
+  if (navItem) navItem.classList.add('active');
+}
+
+document.getElementById('setupForm').addEventListener('submit', handleSetupForm);
+
+document.querySelectorAll('.modal').forEach(modal => {
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.remove('active');
+    }
+  });
+});
+
+document.addEventListener('DOMContentLoaded', init);
