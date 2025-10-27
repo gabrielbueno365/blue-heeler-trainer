@@ -1,0 +1,293 @@
+{
+  "informacoes_cao": {
+    "raca": "Blue Heeler (Australian Cattle Dog)",
+    "data_nascimento": "01/09/2025",
+    "idade_atual": "1 mês e 19 dias (49 dias)",
+    "fase_desenvolvimento": "Final do Período de Transição / Início do Período de Socialização",
+    "periodo_critico": "Janela de Socialização (3-14 semanas) - MOMENTO CRUCIAL"
+  },
+  "metodologia_base": {
+    "abordagem": "Reforço Positivo (Positive Reinforcement)",
+    "principios": [
+      "Recompensar comportamentos desejados (nunca punir)",
+      "Usar marcador (clicker ou palavra) + recompensa imediata",
+      "Sessões curtas e frequentes (5-10 min, 3-5x/dia)",
+      "Progressão gradual (fácil → difícil)",
+      "Consistência total em comandos e regras",
+      "Socialização intensiva durante período crítico",
+      "Enriquecimento mental diário"
+    ],
+    "recompensas": [
+      "Petiscos de alto valor (pequenos pedaços)",
+      "Elogios entusiasmados",
+      "Brinquedos favoritos",
+      "Brincadeiras/jogos"
+    ]
+  },
+  "fases_treinamento": {
+    "fase_1_socializacao_critica": {
+      "periodo": "Semanas 7-14 (ATUAL até ~24/11/2025)",
+      "prioridade": "MÁXIMA - Janela mais importante do desenvolvimento",
+      "objetivos": [
+        "Socialização intensiva com pessoas, cães, animais, ambientes",
+        "Habituação a sons, superfícies, objetos",
+        "Prevenção de medos e fobias",
+        "Construção de confiança",
+        "Bite inhibition (controle de mordida)",
+        "Potty training básico",
+        "Nome e atenção básica"
+      ],
+      "atividades_diarias": {
+        "manha": [
+          "Potty break imediatamente ao acordar",
+          "Sessão 1: Nome + Atenção (5 min)",
+          "Exploração supervisionada da casa (15 min)",
+          "Refeição seguida de potty break"
+        ],
+        "tarde": [
+          "Potty break",
+          "Sessão 2: Socialização controlada (10-15 min)",
+          "Exposição a sons (YouTube: aspirador, trovão, etc) - volume baixo",
+          "Brincadeira livre com brinquedos adequados",
+          "Refeição seguida de potty break"
+        ],
+        "noite": [
+          "Potty break",
+          "Sessão 3: Bite inhibition + Handling (10 min)",
+          "Tempo de colo/carinho/handling",
+          "Refeição seguida de potty break",
+          "Rotina de sono"
+        ]
+      },
+      "exercicios_especificos": {
+        "nome_atencao": {
+          "como": "Diga o nome, quando olhar → click/\"Yes!\" → petisco. 10-15 repetições/sessão",
+          "progressao": "Casa silenciosa → com distrações leves → ambientes diferentes",
+          "meta": "Olhar imediatamente ao ouvir o nome em 80% das vezes"
+        },
+        "socializacao_pessoas": {
+          "como": "Apresentar 5-10 pessoas diferentes/semana. Pessoa oferece petisco. Variar: idades, gêneros, etnias, roupas, chapéus",
+          "cuidado": "Deixar filhote aproximar no ritmo dele, nunca forçar",
+          "meta": "100+ pessoas diferentes até 14 semanas"
+        },
+        "socializacao_caes": {
+          "como": "Interações com cães vacinados, calmos, bem socializados. 2-3x/semana",
+          "local": "Casa de amigos, aulas de filhotes",
+          "meta": "Aprender sinais caninos, brincadeira apropriada"
+        },
+        "habituacao_sons": {
+          "como": "YouTube: sons de aspirador, liquidificador, trovão, fogos, trânsito. Volume 10% → aumentar gradualmente",
+          "quando": "Durante brincadeira ou refeição (associação positiva)",
+          "meta": "Indiferença a sons domésticos comuns"
+        },
+        "superficies_texturas": {
+          "como": "Caminhar sobre: grama, concreto, madeira, carpete, lona, papelão, metal",
+          "metodo": "Petisco a cada passo nas primeiras vezes",
+          "meta": "Confiança em qualquer superfície"
+        },
+        "bite_inhibition": {
+          "como": "Durante brincadeira, se morder forte → \"Ai!\" agudo + parar de brincar 30s. Retomar. Ignorar mordidas leves, recompensar boca gentil",
+          "importancia": "CRÍTICO para Blue Heelers (instinto de nip/heeling)",
+          "meta": "Controle total da força da mordida até 4-5 meses"
+        },
+        "handling": {
+          "como": "Diariamente: tocar patas, orelhas, boca, cauda. Durante: dar petiscos continuamente. 2-3 min/dia",
+          "progressao": "Toque leve → segurar → manipular (cortar unhas simulado)",
+          "meta": "Cão relaxado durante manipulação veterinária/grooming"
+        },
+        "potty_training": {
+          "frequencia": "A cada 1-2h, após comer, brincar, acordar",
+          "metodo": "Levar ao local escolhido → esperar → quando fizer xixi/cocô → \"Yes!\" + festa + petisco IMEDIATAMENTE",
+          "dica": "Nunca punir acidente, apenas limpar sem alarde",
+          "meta": "90% acertos até 12-14 semanas"
+        }
+      }
+    },
+    "fase_2_obediencia_basica": {
+      "periodo": "Semanas 14-24 (~24/11/2025 até ~02/02/2026)",
+      "objetivos": [
+        "Comandos básicos: Sit, Down, Stay, Come",
+        "Leash walking básico",
+        "Impulse control inicial",
+        "Continuação da socialização",
+        "Crate training",
+        "Leave it / Drop it"
+      ],
+      "comandos_ordem_ensino": {
+        "1_sit": {
+          "semanas": "14-16",
+          "metodo": "Lure: petisco no nariz → mover para cima/trás → bumbum desce → click → petisco",
+          "sessoes": "3x/dia, 10 repetições",
+          "progressao": "Sem lure → distância → duração → distrações",
+          "meta": "Sentar com comando verbal em 3s, 90% das vezes"
+        },
+        "2_down": {
+          "semanas": "16-18",
+          "metodo": "De sit: lure petisco para baixo entre patas → corpo desce → click → petisco",
+          "dica": "Pode demorar, use shaping (recompense aproximações)",
+          "meta": "Deitar com comando verbal, 80% das vezes"
+        },
+        "3_stay": {
+          "semanas": "18-20",
+          "metodo": "De sit/down: mão aberta \"Stay\" → 1s → click → petisco. Aumentar tempo gradualmente",
+          "progressao": "1s → 5s → 10s → 30s → 1min",
+          "meta": "Stay de 30s com pessoa a 2m de distância"
+        },
+        "4_come_recall": {
+          "semanas": "20-24",
+          "metodo": "Casa: nome + \"Come\" + agachar + braços abertos → quando vier correndo → FESTA + petiscos múltiplos",
+          "dica": "NUNCA chamar para algo negativo. Sempre recompensa máxima",
+          "progressao": "1m → 3m → 5m → 10m → com distrações",
+          "meta": "Recall 100% confiável em ambiente sem distrações"
+        },
+        "5_leave_it": {
+          "semanas": "20-24",
+          "metodo": "Petisco em mão fechada → cão tenta pegar → espera → quando desiste → \"Yes!\" → petisco da outra mão (melhor)",
+          "progressao": "Mão → chão coberto → chão → andar perto",
+          "importancia": "ESSENCIAL para segurança",
+          "meta": "Ignorar item no chão com comando"
+        }
+      },
+      "leash_walking": {
+        "inicio": "Semana 16-17",
+        "metodo": "Coleira leve + guia. Casa primeiro. Andar → se puxar, parar + esperar → folga na guia → \"Yes!\" + seguir. Petisco a cada 3-5 passos sem puxar",
+        "progressao": "Casa → quintal → calçada calma → rua",
+        "meta": "Caminhada com guia frouxa por 5-10 min"
+      },
+      "crate_training": {
+        "inicio": "Semana 14-15",
+        "metodo": "Porta aberta, petiscos dentro → refeições dentro → fechar porta 1s → aumentar tempo",
+        "objetivo": "Crate = lugar seguro, não punição",
+        "meta": "Relaxar na crate por 1-2h durante o dia"
+      }
+    },
+    "fase_3_avancado_especifico_heeler": {
+      "periodo": "Meses 6-12 (~Março-Setembro 2026)",
+      "foco": "Controle de instintos de pastoreio, exercício mental intenso, comandos avançados",
+      "objetivos": [
+        "Controle de impulso de nip/heeling",
+        "Exercícios mentais complexos",
+        "Truques avançados",
+        "Proofing (generalização)",
+        "Atividades de trabalho (agility, rally)"
+      ],
+      "atividades_especificas_heeler": {
+        "controle_herding": {
+          "problema": "Nip em calcanhares, perseguir/controlar movimento",
+          "solucao": "Redirecionar para brinquedos, ensinar 'easy', exercícios de impulse control",
+          "alternativas": "Herding balls, treibball, flyball"
+        },
+        "enriquecimento_mental": {
+          "frequencia": "Diário, 30-60 min",
+          "atividades": [
+            "Puzzle feeders/toys",
+            "Nosework/scent games",
+            "Trick training",
+            "Obediência avançada",
+            "Agility básico"
+          ]
+        },
+        "exercicio_fisico": {
+          "diario": "60-90 min mínimo (adulto)",
+          "tipos": "Corrida, fetch, natação, hiking, bike",
+          "timing": "ANTES do treinamento mental para melhor foco"
+        }
+      }
+    }
+  },
+  "ferramentas_gratuitas": {
+    "marcador_condicionado": {
+      "opcao_1": "Palavra 'Yes!' (sempre mesmo tom)",
+      "opcao_2": "App gratuito de clicker (iOS/Android)",
+      "opcao_3": "Tampa de garrafa (click físico)",
+      "treinamento_marcador": "Dia 1-3: Click → petisco imediato. 50x. Cão deve virar expectante ao ouvir click"
+    },
+    "rastreamento_progresso": {
+      "metodo": "Planilha Google Sheets gratuita ou caderno físico",
+      "registrar": "Data, exercício, número de tentativas, taxa de sucesso, observações",
+      "frequencia": "Diário"
+    },
+    "recursos_video": {
+      "youtube": [
+        "Zak George (básico)",
+        "Kikopup (técnicas avançadas)",
+        "McCann Dog Training",
+        "Simpawtico Dog Training",
+        "Canais específicos Blue Heeler"
+      ],
+      "estrutura": "Assistir vídeo → praticar imediatamente → registrar resultado"
+    },
+    "socializacao_gratuita": {
+      "opcoes": [
+        "Amigos/família com cães vacinados",
+        "Petshops que aceitam filhotes (após vacinas)",
+        "Aulas de socialização (algumas gratuitas/baixo custo)",
+        "Caminhadas em parques",
+        "Eventos comunitários dog-friendly"
+      ]
+    },
+    "materiais_caseiros": {
+      "puzzle_toys": "Caixa de papelão com petiscos escondidos, garrafas PET com furos, toalha enrolada com petiscos",
+      "obstaculos": "Caixas, túneis de cadeiras/mesas cobertas, pranchas elevadas",
+      "snuffle_mat": "Pedaço de tapete com tiras de tecido amarradas"
+    }
+  },
+  "cronograma_semanal_exemplo": {
+    "idade_atual_7_semanas": {
+      "segunda": {
+        "7h": "Potty → Nome (5min) → Café → Potty",
+        "10h": "Potty → Exploração quintal (15min)",
+        "12h": "Potty → Almoço → Potty",
+        "15h": "Potty → Socialização: visita de 2 amigos (10min) → Sons YouTube (5min)",
+        "18h": "Potty → Jantar → Potty",
+        "20h": "Potty → Bite inhibition (10min) → Handling (5min)",
+        "22h": "Potty final → Crate/sono"
+      },
+      "terca": {
+        "7h": "Potty → Handling (5min) → Café → Potty",
+        "10h": "Potty → Superfícies novas: papelão, tapete (10min)",
+        "12h": "Potty → Almoço → Potty",
+        "15h": "Potty → Nome (5min) → Brinquedos diferentes (15min)",
+        "18h": "Potty → Jantar → Potty",
+        "20h": "Potty → Socialização: criança visitante (10min) → Handling",
+        "22h": "Potty final → Sono"
+      },
+      "quarta": {
+        "seguir_estrutura_similar": "Variar: pessoas, sons, superfícies, brinquedos",
+        "adicionar": "Passeio no carro (5min) se vacinas ok"
+      },
+      "nota": "Repetir padrão com variações diárias para manter engajamento"
+    }
+  },
+  "métricas_sucesso": {
+    "checklist_semanal": {
+      "socializacao": "Mínimo 5 pessoas novas, 2 cães novos, 3 ambientes novos",
+      "treinamento": "21 sessões curtas (3/dia x 7 dias)",
+      "potty": "Taxa de acerto >80%",
+      "handling": "7 sessões de manipulação",
+      "sons": "10 sons diferentes apresentados"
+    },
+    "marcos_desenvolvimento": {
+      "8_semanas": "Responde ao nome, tolera handling básico, 50% acerto potty",
+      "12_semanas": "Sit confiável, 80%+ acerto potty, confortável com 50+ pessoas",
+      "16_semanas": "Sit/Down/Stay básico, leash walking iniciado, 100+ pessoas",
+      "6_meses": "Comandos básicos sólidos, recall confiável, bem socializado"
+    }
+  },
+  "sinais_alerta": {
+    "quando_buscar_ajuda": [
+      "Agressão além de brincadeira normal de filhote",
+      "Medo extremo persistente (>1 semana)",
+      "Regressão súbita no treinamento",
+      "Recusa alimentar por >24h",
+      "Qualquer sinal de doença"
+    ],
+    "recursos_gratuitos_ajuda": [
+      "Grupos Facebook de Blue Heeler/Australian Cattle Dog",
+      "Reddit r/Dogtraining e r/puppy101",
+      "Fóruns especializados",
+      "Vídeos específicos para problema",
+      "Consulta veterinária (saúde)"
+    ]
+  }
+}

@@ -3,84 +3,892 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta name="description" content="Blue Heeler Trainer Pro v3.0" />
-		<meta name="theme-color" content="#FF6B6B" />
-		<title>Blue Heeler Trainer Pro</title>
-		<link rel="stylesheet" href="styles.css" />
-		<link rel="manifest" href="manifest.json" />
+		<title>Blue Heeler Trainer Premium</title>
+		<link rel="stylesheet" href="style.css" />
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	</head>
 	<body>
-		<div id="loginModal" class="modal active">
-			<div class="modal-content login">
-				<h1>🐕 Blue Heeler Trainer Pro</h1>
-				<p class="version">v3.0</p>
-				<form id="loginForm">
-					<input type="password" id="password" placeholder="Senha" required />
-					<small>Use qualquer senha - será salva</small>
-					<button type="submit" class="btn-primary">Entrar</button>
+		<div id="loadingScreen" class="loading-screen">
+			<div class="loading-spinner"></div>
+			<p>Carregando seu treino premium...</p>
+		</div>
+
+		<div id="loginScreen" class="screen">
+			<div class="login-container">
+				<div class="logo-container">
+					<div class="logo-icon">🐕</div>
+					<h1>Blue Heeler Trainer</h1>
+					<p class="premium-badge">PREMIUM</p>
+				</div>
+				<div class="login-form">
+					<h2>Bem-vindo de volta!</h2>
+					<input
+						type="password"
+						id="loginPassword"
+						class="form-control"
+						placeholder="Digite sua senha" />
+					<button id="loginButton" class="btn btn--primary btn--full-width">
+						Entrar
+					</button>
+					<p class="login-hint">
+						Primeira vez? Use qualquer senha para criar sua conta exclusiva.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<div id="onboardingScreen" class="screen hidden">
+			<div class="onboarding-container">
+				<form id="onboardingForm">
+					<div class="onboarding-step" data-step="1">
+						<h2>Vamos conhecer seu Blue Heeler</h2>
+						<p class="subtitle">
+							Essas informações calibram idade, genética e prioridades.
+						</p>
+						<div class="form-grid">
+							<label class="form-group">
+								<span class="form-label">Nome do cão</span>
+								<input
+									type="text"
+									id="dogName"
+									class="form-control"
+									placeholder="Nome do filhote"
+									required />
+							</label>
+							<label class="form-group">
+								<span class="form-label">Data de nascimento</span>
+								<input
+									type="date"
+									id="dogBirthDate"
+									class="form-control"
+									required />
+							</label>
+							<label class="form-group">
+								<span class="form-label">Sexo</span>
+								<select id="dogSex" class="form-control">
+									<option value="">Selecione</option>
+									<option value="fêmea">Fêmea</option>
+									<option value="macho">Macho</option>
+								</select>
+							</label>
+							<label class="form-group">
+								<span class="form-label">Peso aproximado (kg)</span>
+								<input
+									type="number"
+									step="0.1"
+									id="dogWeight"
+									class="form-control"
+									placeholder="Ex: 5.2" />
+							</label>
+							<label class="form-group">
+								<span class="form-label">Cor / variação</span>
+								<input
+									type="text"
+									id="dogCoat"
+									class="form-control"
+									placeholder="Blue, Red, Mottle..." />
+							</label>
+							<label class="form-group">
+								<span class="form-label">Origem</span>
+								<select id="breederType" class="form-control">
+									<option value="">Selecione</option>
+									<option value="criador">Criador especializado</option>
+									<option value="resgate">Resgate / adoção</option>
+									<option value="desconhecida">Linha desconhecida</option>
+								</select>
+							</label>
+						</div>
+						<div class="age-preview">
+							<span id="dogAgeDisplay">Idade estimada: --</span>
+						</div>
+						<div class="step-actions">
+							<button type="button" class="btn btn--primary" data-action="next">
+								Continuar
+							</button>
+						</div>
+					</div>
+
+					<div class="onboarding-step hidden" data-step="2">
+						<h2>Mapeie o temperamento</h2>
+						<p class="subtitle">
+							Escala de 1 (baixo) a 5 (alto). Use percepção atual.
+						</p>
+						<div class="form-grid">
+							<label class="form-group">
+								<span class="form-label">Energia diária</span>
+								<select id="temperamentEnergy" class="form-control">
+									<option value="3">3 - Médio</option>
+									<option value="1">1 - Bem tranquilo</option>
+									<option value="2">2</option>
+									<option value="4">4</option>
+									<option value="5">5 - Motor infinito</option>
+								</select>
+							</label>
+							<label class="form-group">
+								<span class="form-label">Sensibilidade emocional</span>
+								<select id="temperamentSensitivity" class="form-control">
+									<option value="3">3 - Equilibrado</option>
+									<option value="1">1 - Super resiliente</option>
+									<option value="2">2</option>
+									<option value="4">4</option>
+									<option value="5">5 - Muito sensível</option>
+								</select>
+							</label>
+							<label class="form-group">
+								<span class="form-label">Independência</span>
+								<select id="temperamentIndependence" class="form-control">
+									<option value="3">3 - Balanceado</option>
+									<option value="1">1 - Muito colado</option>
+									<option value="2">2</option>
+									<option value="4">4</option>
+									<option value="5">5 - Muito independente</option>
+								</select>
+							</label>
+							<label class="form-group">
+								<span class="form-label">Instinto de pastoreio</span>
+								<select id="temperamentHerding" class="form-control">
+									<option value="4">4 - Forte</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="5">5 - Intensíssimo</option>
+								</select>
+							</label>
+							<label class="form-group">
+								<span class="form-label">Confiança geral</span>
+								<select id="temperamentConfidence" class="form-control">
+									<option value="3">3 - Confiante</option>
+									<option value="1">1 - Inseguro</option>
+									<option value="2">2</option>
+									<option value="4">4</option>
+									<option value="5">5 - Muito confiante</option>
+								</select>
+							</label>
+							<label class="form-group form-group--full">
+								<span class="form-label">Notas específicas</span>
+								<textarea
+									id="temperamentNotes"
+									class="form-control"
+									rows="3"
+									placeholder="Conte detalhes sobre gatilhos, reações ou histórico."></textarea>
+							</label>
+						</div>
+						<div class="step-actions">
+							<button
+								type="button"
+								class="btn btn--secondary"
+								data-action="prev">
+								Voltar
+							</button>
+							<button type="button" class="btn btn--primary" data-action="next">
+								Continuar
+							</button>
+						</div>
+					</div>
+
+					<div class="onboarding-step hidden" data-step="3">
+						<h2>Rotina da casa</h2>
+						<p class="subtitle">Usamos para distribuir sessões e métricas.</p>
+						<div class="form-grid">
+							<label class="form-group">
+								<span class="form-label">Tipo de moradia</span>
+								<select id="homeType" class="form-control">
+									<option value="casa">Casa</option>
+									<option value="apartamento">Apartamento</option>
+									<option value="fazenda">Fazenda / sítio</option>
+								</select>
+							</label>
+							<label class="form-group">
+								<span class="form-label">Area externa disponível?</span>
+								<select id="hasOutdoor" class="form-control">
+									<option value="true">Sim</option>
+									<option value="false">Não</option>
+								</select>
+							</label>
+							<label class="form-group">
+								<span class="form-label">Outros pets</span>
+								<select id="hasOtherPets" class="form-control">
+									<option value="nenhum">Nenhum</option>
+									<option value="cães">Outros cães</option>
+									<option value="gatos">Gatos</option>
+									<option value="mistos">Mistos</option>
+								</select>
+							</label>
+							<label class="form-group">
+								<span class="form-label">Tempo disponível/dia</span>
+								<select id="timePerDay" class="form-control">
+									<option value="45">Até 45 min</option>
+									<option value="90">Cerca de 90 min</option>
+									<option value="150">2h+</option>
+									<option value="210">3h+</option>
+								</select>
+							</label>
+							<label class="form-group">
+								<span class="form-label">Agenda de trabalho</span>
+								<select id="workSchedule" class="form-control">
+									<option value="regular">Horário comercial</option>
+									<option value="flex">Flexível / home office</option>
+									<option value="noturno">Turno noturno</option>
+								</select>
+							</label>
+							<label class="form-group">
+								<span class="form-label">Rede de apoio</span>
+								<select id="supportNetwork" class="form-control">
+									<option value="solo">Só eu</option>
+									<option value="casal">Casal</option>
+									<option value="familia">Família envolvida</option>
+								</select>
+							</label>
+						</div>
+						<div class="step-actions">
+							<button
+								type="button"
+								class="btn btn--secondary"
+								data-action="prev">
+								Voltar
+							</button>
+							<button type="button" class="btn btn--primary" data-action="next">
+								Continuar
+							</button>
+						</div>
+					</div>
+
+					<div class="onboarding-step hidden" data-step="4">
+						<h2>Objetivos &amp; desafios prioritários</h2>
+						<p class="subtitle">
+							Selecione objetivos e marque desafios atuais.
+						</p>
+						<div class="goals-grid" id="goalSelection">
+							<div class="goal-card" data-goal="socialization">
+								<span class="goal-icon">👥</span>
+								<h3>Socialização 100+</h3>
+								<p>Experiências positivas e estruturadas</p>
+							</div>
+							<div class="goal-card" data-goal="pottyMastery">
+								<span class="goal-icon">🎯</span>
+								<h3>Banheiro impecável</h3>
+								<p>90%+ de acerto e rotina previsível</p>
+							</div>
+							<div class="goal-card" data-goal="biteControl">
+								<span class="goal-icon">🦷</span>
+								<h3>Controle de mordida</h3>
+								<p>Redirecionar instinto de pastoreio</p>
+							</div>
+							<div class="goal-card" data-goal="obedience">
+								<span class="goal-icon">✋</span>
+								<h3>Obediência essencial</h3>
+								<p>Consistência Sit / Down / Stay</p>
+							</div>
+							<div class="goal-card" data-goal="recall">
+								<span class="goal-icon">📣</span>
+								<h3>Recall &amp; guia</h3>
+								<p>Respostas explosivas e caminhadas leves</p>
+							</div>
+							<div class="goal-card" data-goal="enrichment">
+								<span class="goal-icon">🧠</span>
+								<h3>Energia mental</h3>
+								<p>Puzzles, nosework e shaping diário</p>
+							</div>
+							<div class="goal-card" data-goal="impulseControl">
+								<span class="goal-icon">⏸️</span>
+								<h3>Controle de impulso</h3>
+								<p>Place, calma e estabilidade emocional</p>
+							</div>
+						</div>
+						<div class="challenge-grid">
+							<label class="challenge-item">
+								<input type="checkbox" id="challengeNipping" />
+								<span>Mordidas / nipping</span>
+							</label>
+							<label class="challenge-item">
+								<input type="checkbox" id="challengeToilet" />
+								<span>Acidentes de banheiro</span>
+							</label>
+							<label class="challenge-item">
+								<input type="checkbox" id="challengeRecall" />
+								<span>Recall inconsistente</span>
+							</label>
+							<label class="challenge-item">
+								<input type="checkbox" id="challengeJump" />
+								<span>Pulos / excesso de energia</span>
+							</label>
+						</div>
+						<label class="form-group form-group--full">
+							<span class="form-label">Foco pessoal (opcional)</span>
+							<textarea
+								id="focusNotes"
+								class="form-control"
+								rows="3"
+								placeholder="Descreva algo específico que queira trabalhar."></textarea>
+						</label>
+						<div class="step-actions">
+							<button
+								type="button"
+								class="btn btn--secondary"
+								data-action="prev">
+								Voltar
+							</button>
+							<button type="submit" class="btn btn--primary">
+								Criar plano premium
+							</button>
+						</div>
+					</div>
 				</form>
 			</div>
 		</div>
-		<div id="app" class="hidden">
-			<header>
-				<h1>🐕 Blue Heeler Trainer Pro</h1>
-				<div id="syncStatus">⚡ Sincronizado</div>
-			</header>
-			<main>
-				<section class="dashboard">
-					<div class="card card-red">
-						<h3>📊 Progresso</h3>
-						<div id="progress">0%</div>
+
+		<div id="mainApp" class="screen hidden">
+			<nav class="main-nav">
+				<button class="nav-item active" data-screen="dashboard">
+					<span class="nav-icon">📊</span>
+					<span>Dashboard</span>
+				</button>
+				<button class="nav-item" data-screen="training">
+					<span class="nav-icon">🎯</span>
+					<span>Treino</span>
+				</button>
+				<button class="nav-item" data-screen="insights">
+					<span class="nav-icon">📈</span>
+					<span>Insights</span>
+				</button>
+				<button class="nav-item" data-screen="badges">
+					<span class="nav-icon">🏆</span>
+					<span>Badges</span>
+				</button>
+				<button class="nav-item" data-screen="profile">
+					<span class="nav-icon">👤</span>
+					<span>Perfil</span>
+				</button>
+			</nav>
+
+			<div id="dashboardScreen" class="app-screen">
+				<div class="screen-header">
+					<div>
+						<h1>Dashboard Premium</h1>
+						<p class="subtitle" id="dogSummary">
+							Plano personalizado para seu Blue Heeler.
+						</p>
 					</div>
-					<div class="card card-yellow">
-						<h3>🔥 Streak</h3>
-						<div id="streak">0</div>
+					<div class="header-meta">
+						<div class="phase-pill" id="phasePill">Fase atual</div>
+						<div class="level-indicator">
+							<span class="level-badge"
+								>Nível <span id="userLevel">1</span></span
+							>
+						</div>
 					</div>
-					<div class="card card-purple">
-						<h3>🏆 Badges</h3>
-						<div id="badges">0</div>
+				</div>
+
+				<div class="stats-grid">
+					<div class="stat-card">
+						<div class="progress-ring" data-progress="0">
+							<svg width="100" height="100">
+								<circle
+									class="progress-ring-circle-bg"
+									cx="50"
+									cy="50"
+									r="40"></circle>
+								<circle
+									class="progress-ring-circle"
+									cx="50"
+									cy="50"
+									r="40"></circle>
+							</svg>
+							<div class="progress-ring-text">
+								<span id="streakDays">0</span>
+								<small>dias</small>
+							</div>
+						</div>
+						<h3>Streak Atual</h3>
+						<p class="stat-value" id="streakSubtitle">
+							Mantenha o motor ligado!
+						</p>
 					</div>
-					<div class="card card-teal">
-						<h3>📅 Dias</h3>
-						<div id="days">0</div>
+					<div class="stat-card">
+						<div class="progress-ring" data-progress="0">
+							<svg width="100" height="100">
+								<circle
+									class="progress-ring-circle-bg"
+									cx="50"
+									cy="50"
+									r="40"></circle>
+								<circle
+									class="progress-ring-circle"
+									cx="50"
+									cy="50"
+									r="40"></circle>
+							</svg>
+							<div class="progress-ring-text">
+								<span id="totalPoints">0</span>
+								<small>pts</small>
+							</div>
+						</div>
+						<h3>Pontos Totais</h3>
+						<p class="stat-value" id="pointsToNextLevel">
+							0 até o próximo nível
+						</p>
+					</div>
+					<div class="stat-card">
+						<div class="progress-ring" data-progress="0">
+							<svg width="100" height="100">
+								<circle
+									class="progress-ring-circle-bg"
+									cx="50"
+									cy="50"
+									r="40"></circle>
+								<circle
+									class="progress-ring-circle"
+									cx="50"
+									cy="50"
+									r="40"></circle>
+							</svg>
+							<div class="progress-ring-text">
+								<span id="badgesEarned">0</span>
+								<small>/15</small>
+							</div>
+						</div>
+						<h3>Badges conquistados</h3>
+						<p class="stat-value">Continue desbloqueando</p>
+					</div>
+					<div class="stat-card">
+						<div class="progress-ring" data-progress="0">
+							<svg width="100" height="100">
+								<circle
+									class="progress-ring-circle-bg"
+									cx="50"
+									cy="50"
+									r="40"></circle>
+								<circle
+									class="progress-ring-circle"
+									cx="50"
+									cy="50"
+									r="40"></circle>
+							</svg>
+							<div class="progress-ring-text">
+								<span id="completionRate">0</span>
+								<small>%</small>
+							</div>
+						</div>
+						<h3>Taxa de conclusão</h3>
+						<p class="stat-value">Monitor semanal</p>
+					</div>
+				</div>
+
+				<section class="mission-card" id="missionCard">
+					<div>
+						<h2>🎯 Missão do dia</h2>
+						<p id="missionTitle">
+							Estruture o dia para manter foco e contenção.
+						</p>
+						<ul id="missionFocus" class="mission-focus"></ul>
+					</div>
+					<div class="mission-meta">
+						<span id="planPhaseLabel" class="phase-tag">Fase atual</span>
+						<span id="planAgeLabel" class="age-tag">Idade</span>
 					</div>
 				</section>
-				<div class="progress-bar">
-					<div id="progressFill">0%</div>
+
+				<section id="riskSection" class="risk-section hidden">
+					<h2>⚠️ Pontos de atenção</h2>
+					<ul id="riskList" class="risk-list"></ul>
+				</section>
+
+				<section class="weekly-outlook">
+					<div class="section-header">
+						<h2>📅 Plano da semana</h2>
+						<button id="refreshWeeklyButton" class="btn btn--outline btn--sm">
+							Atualizar
+						</button>
+					</div>
+					<div id="weeklyOutlook" class="weekly-outlook-grid"></div>
+				</section>
+
+				<section class="featured-lesson" id="featuredLessonCard">
+					<div class="featured-content">
+						<h2>📘 Lição destaque</h2>
+						<h3 id="featuredLessonTitle">Controle do Instinto de Pastoreio</h3>
+						<p id="featuredLessonSummary">
+							Use redirecionamento inteligente para transformar nipping em
+							trabalho guiado.
+						</p>
+						<button id="openFeaturedLesson" class="btn btn--primary btn--sm">
+							Ver passo a passo
+						</button>
+					</div>
+				</section>
+
+				<section class="knowledge-library">
+					<h2>🔬 Biblioteca Blue Heeler</h2>
+					<div id="knowledgeLibrary" class="knowledge-grid"></div>
+				</section>
+
+				<section class="quick-stats">
+					<h2>📊 Estatísticas rápidas</h2>
+					<div class="quick-stats-grid">
+						<div class="quick-stat">
+							<span class="quick-stat-icon">👥</span>
+							<span class="quick-stat-value" id="socialCount">0</span>
+							<span class="quick-stat-label">Contatos sociais</span>
+						</div>
+						<div class="quick-stat">
+							<span class="quick-stat-icon">🎯</span>
+							<span class="quick-stat-value" id="pottySuccessRate">0%</span>
+							<span class="quick-stat-label">Taxa potty</span>
+						</div>
+						<div class="quick-stat">
+							<span class="quick-stat-icon">🧠</span>
+							<span class="quick-stat-value" id="mentalGamesCount">0</span>
+							<span class="quick-stat-label">Jogos mentais</span>
+						</div>
+						<div class="quick-stat">
+							<span class="quick-stat-icon">⏱️</span>
+							<span class="quick-stat-value" id="avgSessionTime">0m</span>
+							<span class="quick-stat-label">Tempo médio</span>
+						</div>
+					</div>
+				</section>
+			</div>
+
+			<div id="trainingScreen" class="app-screen hidden">
+				<div class="screen-header">
+					<div>
+						<h1>Plano de hoje</h1>
+						<p class="subtitle" id="planSubtitle">
+							Converta energia em progresso real.
+						</p>
+					</div>
+					<div class="date-badge" id="todayDate"></div>
 				</div>
-				<nav class="tabs">
-					<button class="active" data-tab="today">📅 Hoje</button>
-					<button data-tab="badges">🏆 Badges</button>
-				</nav>
-				<div id="today" class="tab-content active">
-					<h2>Treinos de Hoje</h2>
-					<div id="trainingList"></div>
+
+				<div class="daily-progress">
+					<div class="progress-bar-container">
+						<div class="progress-bar" id="dailyProgressBar"></div>
+					</div>
+					<p class="progress-text">
+						<span id="completedTasks">0</span> de
+						<span id="totalTasks">0</span> tarefas concluídas
+					</p>
 				</div>
-				<div id="badgesTab" class="tab-content">
-					<h2>🏆 Conquistas</h2>
-					<div id="badgesGrid"></div>
+
+				<div id="tasksContainer" class="tasks-container"></div>
+
+				<section class="metrics-section">
+					<div class="metrics-header">
+						<h2>📊 Registre atividades</h2>
+						<span id="metricsTargetSummary" class="metrics-target"
+							>Meta semanal personalizada</span
+						>
+					</div>
+					<div class="metrics-grid">
+						<div class="metric-card" data-metric="socialContacts">
+							<h3>👥 Contatos sociais</h3>
+							<div class="metric-controls">
+								<button
+									class="btn btn--secondary btn--sm"
+									data-action="decrement">
+									-
+								</button>
+								<span class="metric-value" id="metric-socialContacts">0</span>
+								<button
+									class="btn btn--primary btn--sm"
+									data-action="increment">
+									+
+								</button>
+							</div>
+						</div>
+						<div class="metric-card" data-metric="newSurfaces">
+							<h3>🌍 Novas superfícies</h3>
+							<div class="metric-controls">
+								<button
+									class="btn btn--secondary btn--sm"
+									data-action="decrement">
+									-
+								</button>
+								<span class="metric-value" id="metric-newSurfaces">0</span>
+								<button
+									class="btn btn--primary btn--sm"
+									data-action="increment">
+									+
+								</button>
+							</div>
+						</div>
+						<div class="metric-card" data-metric="soundAcclimation">
+							<h3>🔊 Aclimatação sonora</h3>
+							<div class="metric-controls">
+								<button
+									class="btn btn--secondary btn--sm"
+									data-action="decrement">
+									-
+								</button>
+								<span class="metric-value" id="metric-soundAcclimation">0</span>
+								<button
+									class="btn btn--primary btn--sm"
+									data-action="increment">
+									+
+								</button>
+							</div>
+						</div>
+						<div class="metric-card" data-metric="handling">
+							<h3>🤲 Manipulação</h3>
+							<div class="metric-controls">
+								<button
+									class="btn btn--secondary btn--sm"
+									data-action="decrement">
+									-
+								</button>
+								<span class="metric-value" id="metric-handling">0</span>
+								<button
+									class="btn btn--primary btn--sm"
+									data-action="increment">
+									+
+								</button>
+							</div>
+						</div>
+						<div class="metric-card" data-metric="trainingSessions">
+							<h3>🎓 Sessões de treino</h3>
+							<div class="metric-controls">
+								<button
+									class="btn btn--secondary btn--sm"
+									data-action="decrement">
+									-
+								</button>
+								<span class="metric-value" id="metric-trainingSessions">0</span>
+								<button
+									class="btn btn--primary btn--sm"
+									data-action="increment">
+									+
+								</button>
+							</div>
+						</div>
+						<div class="metric-card" data-metric="mentalGames">
+							<h3>🧠 Jogos mentais</h3>
+							<div class="metric-controls">
+								<button
+									class="btn btn--secondary btn--sm"
+									data-action="decrement">
+									-
+								</button>
+								<span class="metric-value" id="metric-mentalGames">0</span>
+								<button
+									class="btn btn--primary btn--sm"
+									data-action="increment">
+									+
+								</button>
+							</div>
+						</div>
+						<div class="metric-card" data-metric="calmResets">
+							<h3>😌 Calm resets</h3>
+							<div class="metric-controls">
+								<button
+									class="btn btn--secondary btn--sm"
+									data-action="decrement">
+									-
+								</button>
+								<span class="metric-value" id="metric-calmResets">0</span>
+								<button
+									class="btn btn--primary btn--sm"
+									data-action="increment">
+									+
+								</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="potty-section">
+						<div class="potty-header">
+							<h3>🎯 Registro de banheiro</h3>
+							<span id="pottyTargetLabel" class="metrics-target"
+								>Meta 85%+</span
+							>
+						</div>
+						<div class="potty-controls">
+							<button id="pottySuccessBtn" class="btn btn--primary">
+								✅ Sucesso
+							</button>
+							<button id="pottyAccidentBtn" class="btn btn--outline">
+								❌ Acidente
+							</button>
+						</div>
+						<p class="potty-stats">
+							Taxa atual: <strong id="pottyRate">0%</strong> (<span
+								id="pottySuccesses"
+								>0</span
+							>/<span id="pottyAttempts">0</span>)
+						</p>
+					</div>
+				</section>
+
+				<section class="tools-panel">
+					<h2>🛠️ Ferramentas de sessão</h2>
+					<div class="tools-grid">
+						<button id="clickerButton" class="tool-btn">🎯 Clicker</button>
+						<button id="whistleButton" class="tool-btn">📢 Whistle</button>
+						<div class="tool-timer">
+							<span id="timerDisplay">00:00</span>
+							<div class="timer-actions">
+								<button id="timerStart" class="btn btn--primary btn--sm">
+									Iniciar
+								</button>
+								<button id="timerStop" class="btn btn--secondary btn--sm">
+									Parar
+								</button>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section class="social-checklist">
+					<div class="section-header">
+						<h2>📋 Checklist de socialização</h2>
+						<button id="openChecklist" class="btn btn--outline btn--sm">
+							Ver lista
+						</button>
+					</div>
+					<p>
+						Use a lista inteligente para marcar pessoas, superfícies, sons e
+						manipulações concluídas na semana.
+					</p>
+				</section>
+			</div>
+
+			<div id="insightsScreen" class="app-screen hidden">
+				<div class="screen-header">
+					<h1>Insights &amp; análises</h1>
+					<p class="subtitle">Diagnóstico automático do seu progresso.</p>
 				</div>
-			</main>
-			<button id="settingsBtn">⚙️</button>
-		</div>
-		<div id="settingsModal" class="modal">
-			<div class="modal-content">
-				<h2>⚙️ Configurações</h2>
-				<button id="closeSettings">×</button>
-				<div>
-					<label>Nome do Cão:</label>
-					<input id="dogName" type="text" />
-					<label>Data Nasc:</label>
-					<input id="dogBirth" type="date" />
-					<label>
-						<input id="darkMode" type="checkbox" />
-						Modo Escuro
-					</label>
-					<button id="exportBtn">📥 Exportar</button>
-					<button id="logoutBtn">🚪 Sair</button>
+
+				<section class="insights-deck">
+					<div class="insight-column">
+						<h2>✅ Destaques</h2>
+						<ul id="insightHighlights" class="insight-list"></ul>
+					</div>
+					<div class="insight-column">
+						<h2>⚠️ Alertas</h2>
+						<ul id="insightWarnings" class="insight-list"></ul>
+					</div>
+					<div class="insight-column">
+						<h2>🎯 Recomendações</h2>
+						<ul id="insightSuggestions" class="insight-list"></ul>
+					</div>
+				</section>
+
+				<div class="insights-section">
+					<h2>📈 Progresso semanal</h2>
+					<div class="chart-container"><canvas id="weeklyChart"></canvas></div>
+				</div>
+
+				<div class="insights-section">
+					<h2>🎯 Distribuição por categoria</h2>
+					<div class="chart-container">
+						<canvas id="categoryChart"></canvas>
+					</div>
+				</div>
+
+				<div class="insights-section">
+					<h2>🔥 Heatmap de atividades</h2>
+					<div id="heatmapContainer" class="heatmap-container"></div>
+				</div>
+			</div>
+
+			<div id="badgesScreen" class="app-screen hidden">
+				<div class="screen-header">
+					<h1>🏆 Badges &amp; conquistas</h1>
+					<p class="subtitle">Colecione provas da sua consistência.</p>
+				</div>
+				<div id="badgesContainer" class="badges-container"></div>
+			</div>
+
+			<div id="profileScreen" class="app-screen hidden">
+				<div class="screen-header">
+					<h1>👤 Seu perfil</h1>
+				</div>
+
+				<div class="profile-card">
+					<div class="profile-avatar">🐕</div>
+					<h2 id="profileDogName">Blue Heeler Trainer</h2>
+					<div class="level-display">
+						<span class="level-badge-large"
+							>Nível <span id="profileLevel">1</span></span
+						>
+						<p><span id="profilePoints">0</span> pontos totais</p>
+					</div>
+					<p class="profile-age" id="profileDogAge">Idade • --</p>
+				</div>
+
+				<div class="profile-stats">
+					<h3>📊 Estatísticas gerais</h3>
+					<div class="profile-stats-grid">
+						<div class="profile-stat">
+							<span class="profile-stat-label">Dias de treino</span>
+							<span class="profile-stat-value" id="totalDays">0</span>
+						</div>
+						<div class="profile-stat">
+							<span class="profile-stat-label">Melhor streak</span>
+							<span class="profile-stat-value" id="bestStreak">0</span>
+						</div>
+						<div class="profile-stat">
+							<span class="profile-stat-label">Tarefas completas</span>
+							<span class="profile-stat-value" id="totalTasksCompleted">0</span>
+						</div>
+						<div class="profile-stat">
+							<span class="profile-stat-label">Taxa média</span>
+							<span class="profile-stat-value" id="avgCompletionRate">0%</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="profile-goals">
+					<h3>🎯 Objetivos ativos</h3>
+					<div id="profileGoals" class="goals-list"></div>
+				</div>
+
+				<div class="profile-actions">
+					<button
+						id="exportDataButton"
+						class="btn btn--outline btn--full-width">
+						📥 Exportar dados
+					</button>
+					<button id="logoutButton" class="btn btn--secondary btn--full-width">
+						🚪 Sair
+					</button>
 				</div>
 			</div>
 		</div>
-		<script src="app.js"></script>
+
+		<div id="toastContainer" class="toast-container"></div>
+
+		<div id="celebrationModal" class="modal hidden">
+			<div class="modal-content celebration">
+				<div class="celebration-icon" id="celebrationIcon">🎉</div>
+				<h2 id="celebrationTitle">Parabéns!</h2>
+				<p id="celebrationMessage">Você bateu a meta!</p>
+				<button id="celebrationClose" class="btn btn--primary">
+					Continuar
+				</button>
+			</div>
+		</div>
+
+		<div id="lessonModal" class="modal hidden">
+			<div class="modal-content lesson-modal">
+				<button id="lessonModalClose" class="modal-close">✕</button>
+				<div class="lesson-header">
+					<span id="lessonPhaseTag" class="phase-tag">Fase</span>
+					<span id="lessonModuleTag" class="module-tag">Módulo</span>
+				</div>
+				<h2 id="lessonModalTitle">Título da lição</h2>
+				<p id="lessonModalSummary" class="lesson-summary">Resumo da lição.</p>
+				<div id="lessonObjectives" class="lesson-section"></div>
+				<div id="lessonWhy" class="lesson-section"></div>
+				<div id="lessonSteps" class="lesson-section"></div>
+				<div id="lessonTemperament" class="lesson-section"></div>
+				<div id="lessonTools" class="lesson-section"></div>
+				<div id="lessonTroubleshooting" class="lesson-section"></div>
+				<div id="lessonMetrics" class="lesson-section"></div>
+				<div id="lessonNextSteps" class="lesson-section"></div>
+				<div id="lessonReferences" class="lesson-section"></div>
+			</div>
+		</div>
+
+		<script type="module" src="app.js"></script>
 	</body>
 </html>

@@ -1,0 +1,166 @@
+{
+  "Apps Principais": [
+    {
+      "nome": "Dogo",
+      "avaliacao": "4.6-4.8/5",
+      "usuarios": "10+ milhões",
+      "preco": "$9.99/semana, $29.99/mês ou $49.99/3 meses",
+      "recursos_chave": [
+        "+100 exercícios de treinamento guiados",
+        "Programa de treinamento personalizado baseado em questionário",
+        "Clicker integrado no app",
+        "Feedback de vídeo de treinadores profissionais em 24h",
+        "Programas específicos (potty training, novo cão, parar de pular, etc)",
+        "Comunidade de 10M+ membros",
+        "Rastreamento de progresso"
+      ],
+      "metodologia": "Reforço positivo com clicker training"
+    },
+    {
+      "nome": "Puppr",
+      "avaliacao": "4.8/5 iOS, 4.1/5 Android",
+      "usuarios": "Milhões",
+      "preco": "$22.99/mês ou $99.99/ano (versão básica gratuita)",
+      "recursos_chave": [
+        "+100 lições com vídeo passo-a-passo",
+        "Treinada por Sara Carson (celebridade do AGT)",
+        "Guia semanal para filhotes",
+        "Masterclasses para truques avançados",
+        "Chat com treinadores profissionais certificados",
+        "Clicker integrado",
+        "Sem limite de tempo nas sessões"
+      ],
+      "metodologia": "Reforço positivo, foco em truques"
+    },
+    {
+      "nome": "GoodPup",
+      "avaliacao": "4.8/5",
+      "usuarios": "80K+ cães treinados",
+      "preco": "$34/semana (8-10 semanas), ~$272-340 total",
+      "recursos_chave": [
+        "Sessões de vídeo 1-on-1 semanais (30 min) com treinador certificado",
+        "Plano de treinamento personalizado após avaliação",
+        "Chat ilimitado 24/7 com treinadores",
+        "Relatórios de progresso",
+        "Guias de treinamento diários personalizados",
+        "Certificado AKC Canine Good Citizen ao completar"
+      ],
+      "metodologia": "Reforço positivo com suporte personalizado"
+    },
+    {
+      "nome": "Pupford",
+      "avaliacao": "4.8/5 iOS, 4.6/5 Android",
+      "usuarios": "2+ milhões",
+      "preco": "$9.99/mês (curso básico gratuito de 30 dias)",
+      "recursos_chave": [
+        "Curso gratuito de 30 dias por Zak George",
+        "+10 cursos premium (reatividade, recall, ansiedade de separação)",
+        "Rastreamento de comportamento",
+        "Assistente AI (Ask Doris)",
+        "Comunidade privada",
+        "Vídeos, áudio e texto",
+        "Artigos sobre nutrição e bem-estar"
+      ],
+      "metodologia": "Reforço positivo com modelo de academia online"
+    },
+    {
+      "nome": "PawChamp",
+      "avaliacao": "4.1/5",
+      "usuarios": "Novos (lançado 2025)",
+      "preco": "Não especificado",
+      "recursos_chave": [
+        "Conteúdo científico de treinadores certificados",
+        "Suporte 24/7 'Ask the Trainer'",
+        "Treinamento flexível de comandos com clicker",
+        "Guias passo-a-passo",
+        "Biblioteca extensa de vídeos",
+        "+100 comandos e jogos",
+        "Assistente AI integrado"
+      ],
+      "metodologia": "Baseado em ciência, reforço positivo"
+    },
+    {
+      "nome": "Woofz",
+      "avaliacao": "4.8/5 iOS, 4.6/5 Android",
+      "usuarios": "20+ milhões de downloads",
+      "preco": "Não especificado",
+      "recursos_chave": [
+        "+150 lições de treinamento",
+        "Plano de treinamento personalizado",
+        "Vídeos tutoriais e lições ilustradas",
+        "Rastreador de saúde e fitness",
+        "Rastreador de caminhadas",
+        "Sons relaxantes para cães",
+        "Suporte 24/7 de treinadores",
+        "Fatos sobre raças"
+      ],
+      "metodologia": "Reforço positivo"
+    },
+    {
+      "nome": "Hundeo",
+      "avaliacao": "4.5/5",
+      "usuarios": "1+ milhão, 500K+ downloads",
+      "preco": "Não especificado",
+      "recursos_chave": [
+        "Planos de treinamento personalizados",
+        "+500 atividades (truques, jogos, receitas)",
+        "30+ cursos conduzidos por especialistas",
+        "Vídeos passo-a-passo",
+        "AI Coach 24/7",
+        "Sons relaxantes",
+        "Fatos sobre raças",
+        "Clicker e apito integrados",
+        "Funciona offline"
+      ],
+      "metodologia": "Baseado em especialistas, reforço positivo"
+    }
+  ],
+  "Padrões Identificados": {
+    "estrutura_comum": [
+      "Questionário inicial para personalização",
+      "Biblioteca extensa de vídeos (100+ lições)",
+      "Progressão estruturada (básico → intermediário → avançado)",
+      "Rastreamento de progresso",
+      "Clicker integrado no app",
+      "Comunidade de usuários",
+      "Suporte de treinadores (chat ou vídeo)"
+    ],
+    "metodologia_universal": "Reforço Positivo (Positive Reinforcement)",
+    "elementos_tecnicos": [
+      "Clicker training (marcador condicionado)",
+      "Shaping (moldagem gradual)",
+      "Lure training (treino com isca/petisco)",
+      "Capturing (captura de comportamentos naturais)",
+      "Counter-conditioning (contracondicionamento)",
+      "Desensibilização gradual"
+    ],
+    "estrutura_pedagogica": [
+      "Sessões curtas (5-15 minutos)",
+      "Repetição espaçada",
+      "Aumento gradual de distrações",
+      "Generalização de ambientes",
+      "Recompensas de alto valor",
+      "Consistência de comandos"
+    ],
+    "categorias_treinamento": [
+      "Obediência básica (sit, stay, come, down, heel)",
+      "Potty training",
+      "Leash walking",
+      "Recall",
+      "Truques avançados",
+      "Solução de problemas comportamentais",
+      "Socialização",
+      "Impulse control"
+    ]
+  },
+  "Diferenciais_dos_Melhores": {
+    "personalizacao": "Questionários iniciais sobre raça, idade, nível atual, problemas específicos",
+    "feedback_profissional": "GoodPup oferece sessões ao vivo, Dogo oferece feedback por vídeo",
+    "progressao_estruturada": "Programas de 8-10 semanas com milestones claros",
+    "variedade_conteudo": "Vídeos + texto + áudio + PDFs",
+    "gamificacao": "Sistema de recompensas, desafios, milestones",
+    "acessibilidade_247": "Chat com AI ou treinadores disponível sempre",
+    "base_cientifica": "Conteúdo aprovado por veterinários e behavioristas certificados",
+    "offline_friendly": "Alguns apps funcionam sem internet"
+  }
+}
